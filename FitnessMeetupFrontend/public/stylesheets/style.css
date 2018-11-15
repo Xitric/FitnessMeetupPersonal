@@ -1,0 +1,22 @@
+body {
+    font-family: "Trebuchet MS", sans-serif;
+}
+
+.background {
+    background-color: #f6f7f8;
+}
+
+.pageTitle {
+    background-color: white;
+    box-shadow: 0 1px 2px -2px gray;
+    overflow: hidden;
+    padding: 16px;
+}
+
+.meetupDetailsInfo {
+    float: left;
+}
+
+.meetupDetailsInfo div {
+    clear: both;
+}
