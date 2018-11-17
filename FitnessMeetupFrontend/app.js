@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const expressSession = require("express-session");
 const passport = require("passport");
+const hbs = require("express-handlebars");
 const passport_auth0_1 = require("passport-auth0");
 const controllers_1 = require("./controllers");
 const app = express();
@@ -41,7 +42,12 @@ passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.engine('hbs', hbs({
+    extname: '.hbs',
+    defaultLayout: 'layout',
+    layoutsDir: __dirname + '/views',
+    partialsDir: __dirname + '/views/partials'
+}));
 app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(express.json());

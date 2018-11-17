@@ -5,6 +5,7 @@ import * as cookieParser from 'cookie-parser';
 import * as logger from 'morgan';
 import * as expressSession from 'express-session';
 import * as passport from 'passport';
+import * as hbs from 'express-handlebars';
 
 import {Strategy} from 'passport-auth0';
 import {AuthenticationController, HomeController, MeetupsController, UserController} from './controllers';
@@ -51,7 +52,12 @@ passport.deserializeUser(function (user, done) {
 });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.engine('hbs', hbs( {
+    extname: '.hbs',
+    defaultLayout: 'layout',
+    layoutsDir: __dirname + '/views',
+    partialsDir: __dirname + '/views/partials'
+}));
 app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
