@@ -5,7 +5,7 @@ const DatabaseContext_1 = require("./DatabaseContext");
 const User_1 = require("./models/User");
 class UsersRepository {
     getUser(id) {
-        let userRequest = new tedious_1.Request('select * from [User] where userId = @id', () => { });
+        let userRequest = new tedious_1.Request('select * from [User] where [userId] = @id', () => { });
         userRequest.addParameter('id', tedious_1.TYPES.VarChar, id);
         return new Promise((resolve, reject) => {
             DatabaseContext_1.default.execute(userRequest, rows => {
@@ -23,8 +23,8 @@ class UsersRepository {
         });
     }
     getUsers(ids) {
-        let userRequest = new tedious_1.Request('select * from [User] where userId in ('
-            + this.generateIdParameters(ids.length)
+        let userRequest = new tedious_1.Request('select * from [User] where [userId] in ('
+            + UsersRepository.generateIdParameters(ids.length)
             + ')', () => { });
         ids.forEach((item, index) => {
             userRequest.addParameter('id' + index, tedious_1.TYPES.VarChar, item);
@@ -43,7 +43,7 @@ class UsersRepository {
             });
         });
     }
-    generateIdParameters(count) {
+    static generateIdParameters(count) {
         let idParameters = '';
         for (let i = 0; i < count; i++) {
             if (i != 0) {

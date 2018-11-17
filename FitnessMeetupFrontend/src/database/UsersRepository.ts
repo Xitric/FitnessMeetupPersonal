@@ -5,7 +5,7 @@ import User from "./models/User";
 class UsersRepository {
 
     public getUser(id: number): Promise<User> {
-        let userRequest = new Request('select * from [User] where userId = @id', () => {});
+        let userRequest = new Request('select * from [User] where [userId] = @id', () => {});
         userRequest.addParameter('id', TYPES.VarChar, id);
 
         return new Promise<User>((resolve, reject) => {
@@ -25,8 +25,8 @@ class UsersRepository {
     }
 
     public getUsers(ids: number[]): Promise<User[]> {
-        let userRequest = new Request('select * from [User] where userId in ('
-            + this.generateIdParameters(ids.length)
+        let userRequest = new Request('select * from [User] where [userId] in ('
+            + UsersRepository.generateIdParameters(ids.length)
             + ')', () => {});
 
         ids.forEach((item, index) => {
@@ -50,7 +50,7 @@ class UsersRepository {
         });
     }
 
-    private generateIdParameters(count: number): string {
+    private static generateIdParameters(count: number): string {
         let idParameters = '';
         for (let i = 0; i < count; i++) {
             if (i != 0) {
