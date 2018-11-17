@@ -1,12 +1,22 @@
 <div class="background">
     <div class="pageTitle">
         <div class="meetupDetailsInfo">
-            <h1>{{title}}</h1>
+            <h1>{{meetup.title}}</h1>
             <div>
-                <p>Hosted by: {{ owner.name }}</p>
-                <p>When: {{ date }}</p>
+                <p>Hosted by: {{meetup.owner.name}}</p>
+                <p>When: {{meetup.date}}</p>
+            </div>
+        </div>
+        <div class="joinDiv" align="right">
+            <div>
+                <button class="joinButton">Join</button>
+                <p>Only TODO spots left!</p>
             </div>
         </div>
     </div>
-    <div style="height: 500px;"></div>
+    <div class="detailContent">
+        <h3>Details</h3>
+        <p>{{meetup.description}}</p>
+        <h3>Participants ({{meetup.participants.length}})</h3>
+    </div>
 </div>
