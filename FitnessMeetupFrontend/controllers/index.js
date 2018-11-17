@@ -5,4 +5,6 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./home"));
 __export(require("./meetups"));
+__export(require("./authentication"));
+__export(require("./user"));
 //# sourceMappingURL=index.js.map

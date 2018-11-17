@@ -3,10 +3,52 @@ import * as express from 'express';
 import * as path from 'path';
 import * as cookieParser from 'cookie-parser';
 import * as logger from 'morgan';
+import * as expressSession from 'express-session';
+import * as passport from 'passport';
 
-import {HomeController, MeetupsController} from './controllers';
+import {Strategy} from 'passport-auth0';
+import {AuthenticationController, HomeController, MeetupsController, UserController} from './controllers';
+import {SessionOptions} from 'express-session';
+import {Express} from 'express';
 
-const app = express();
+const app: Express = express();
+
+//Express session
+const session: SessionOptions = {
+    secret: '7BFB6ogkpX%P614BngqL^tzYV3x*4al8FPnlUDTaBR7Vj8j5^q&E*dFk2Mmv5V^G',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {}
+};
+
+if (app.get('env') === 'production') {
+    session.cookie.secure = true;
+}
+
+app.use(expressSession(session));
+
+//Passport Auth0
+var strategy: Strategy = new Strategy({
+    domain: process.env.AUTH0_DOMAIN,
+    clientID: process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    callbackURL: '/callback'
+}, function (accessToken, refreshToken, extraParams, profile, done) {
+    return done(null, profile);
+});
+
+passport.use(strategy);
+app.use(passport.initialize());
+app.use(passport.session());
+
+//TODO: User interface
+passport.serializeUser<any, any>(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,7 +62,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Controllers
 app.use('/', HomeController);
+app.use('/', AuthenticationController);
 app.use('/meetups', MeetupsController);
+app.use('/user', UserController);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
