@@ -13,27 +13,29 @@ class DatabaseContext {
         }
     };
 
-    public execute(request: Request, callback: (rows: any[]) => void) {
-        const connection = new Connection(this.config);
-        let rows: any[] = [];
+    public async execute(request: Request): Promise<any[]> {
+        return new Promise<any[]>(resolve => {
+            const connection = new Connection(this.config);
+            let rows: any[] = [];
 
-        request.on('row', function (columns) {
-            let row = {};
-            columns.forEach(column => {
-                row[column.metadata.colName] = column.value;
+            request.on('row', function (columns) {
+                let row = {};
+                columns.forEach(column => {
+                    row[column.metadata.colName] = column.value;
+                });
+                rows.push(row);
             });
-            rows.push(row);
-        });
 
-        request.on('requestCompleted', function () {
-            connection.close();
-            callback(rows);
-        });
+            request.on('requestCompleted', function () {
+                connection.close();
+                resolve(rows);
+            });
 
-        connection.on('connect', function (err) {
-            if (!err) {
-                connection.execSql(request);
-            }
+            connection.on('connect', function (err) {
+                if (!err) {
+                    connection.execSql(request);
+                }
+            });
         });
     }
 }
