@@ -8,7 +8,7 @@ namespace FitnessMeetupApi.Persistence
 {
     public class MeetupsRepository : IMeetupsRepository
     {
-        public void AddPartipant(long meetupId, long userId)
+        public void AddPartipant(long meetupId, string userId)
         {
             using (var context = new FitnessMeetupKasperContext())
             {

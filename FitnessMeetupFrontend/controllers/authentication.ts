@@ -5,7 +5,8 @@ import loginBlock from './middleware/loginBlocker';
 
 const router = Router();
 
-router.get('/login', loginBlock, passport.authenticate('auth0', {scope: 'openid email profile'}), function (req: Request, res: Response, next: NextFunction) {
+// @ts-ignore
+router.get('/login', loginBlock, passport.authenticate('auth0', {audience: 'https://fitnessmeetupkasper.azurewebsites.net', scope: 'openid email profile'}), function (req: Request, res: Response, next: NextFunction) {
     res.redirect('/');
 });
 

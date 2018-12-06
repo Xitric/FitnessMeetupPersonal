@@ -2,21 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FitnessMeetupApi
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
             services.AddPersistence();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer( options => {
+                //Using this, the middleware can automatically fetch the public key online to validate the signing of the JWT
+                options.Authority = Configuration["Auth0:Authority"];
+                //Ensure that the JWT was issued to this API
+                options.Audience = Configuration["Auth0:Audience"];
+            });
             services.AddMvc();
         }
 
@@ -35,6 +53,7 @@ namespace FitnessMeetupApi
 
             app.UseHttpsRedirection();
             app.UseCors(builder => builder.AllowAnyOrigin());
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

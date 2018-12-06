@@ -13,23 +13,24 @@ const controllers_1 = require("./controllers");
 const app = express();
 //Express session
 const session = {
-    secret: '7BFB6ogkpX%P614BngqL^tzYV3x*4al8FPnlUDTaBR7Vj8j5^q&E*dFk2Mmv5V^G',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {}
+    cookie: {} //TODO: Secure, HTTP Only, SameSite
 };
+//TODO: This might not be needed if the above is resolved
 if (app.get('env') === 'production') {
     session.cookie.secure = true;
 }
 app.use(expressSession(session));
 //Passport Auth0
-var strategy = new passport_auth0_1.Strategy({
+let strategy = new passport_auth0_1.Strategy({
     domain: process.env.AUTH0_DOMAIN,
     clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL: '/callback'
 }, function (accessToken, refreshToken, extraParams, profile, done) {
-    return done(null, profile);
+    return done(null, { user: profile, accessToken: accessToken, refreshToken: refreshToken });
 });
 passport.use(strategy);
 app.use(passport.initialize());

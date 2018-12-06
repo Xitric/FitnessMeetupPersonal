@@ -11,6 +11,6 @@ namespace FitnessMeetupApi.Persistence
 
         IEnumerable<Meetup> GetMeetups(int offset, int count, string sport);
 
-        void AddPartipant(long meetupId, long userId);
+        void AddPartipant(long meetupId, string userId);
     }
 }

@@ -15,6 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using FitnessMeetupApi.Service.Attributes;
 using FitnessMeetupApi.Service.Models;
 using FitnessMeetupApi.Persistence;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitnessMeetupApi.Service.Controllers
 {
@@ -39,6 +40,7 @@ namespace FitnessMeetupApi.Service.Controllers
         [HttpPost]
         [Route("/v1/users")]
         [ValidateModelState]
+        [Authorize]
         public virtual IActionResult AddUser([FromBody]User user)
         {
             try
@@ -61,9 +63,9 @@ namespace FitnessMeetupApi.Service.Controllers
         [HttpGet]
         [Route("/v1/users/{id}")]
         [ValidateModelState]
-        public virtual IActionResult GetUser([FromRoute][Required]long? id)
+        public virtual IActionResult GetUser([FromRoute][Required]string id)
         {
-            var user = users.GetUser((long) id);
+            var user = users.GetUser(id);
             Console.WriteLine(user);
             if (user == null)
             {

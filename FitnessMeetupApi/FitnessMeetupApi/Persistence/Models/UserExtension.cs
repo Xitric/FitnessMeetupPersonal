@@ -26,7 +26,7 @@
 
             return new User()
             {
-                UserId = (long) dto.Id,
+                UserId = dto.Id,
                 Name = dto.Name,
                 Email = dto.Email
             };

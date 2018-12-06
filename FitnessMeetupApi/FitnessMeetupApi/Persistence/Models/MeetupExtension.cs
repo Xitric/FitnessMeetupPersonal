@@ -44,7 +44,7 @@ namespace FitnessMeetupApi.Persistence.Models
                 Participant = dto.Participants.Where(participant => participant.Id != null).Select(participant => new Models.Participant()
                 {
                     MeetupId = (int) dto.Id,
-                    UserId = (long) participant.Id
+                    UserId = participant.Id
                 }).ToList()
             };
         }

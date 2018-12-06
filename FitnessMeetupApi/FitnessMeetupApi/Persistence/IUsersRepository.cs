@@ -4,8 +4,8 @@ namespace FitnessMeetupApi.Persistence
 {
     public interface IUsersRepository
     {
-        User GetUser(long userId);
+        User GetUser(string userId);
 
-        long AddUser(User user);
+        string AddUser(User user);
     }
 }

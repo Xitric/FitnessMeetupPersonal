@@ -16,6 +16,7 @@ using FitnessMeetupApi.Service.Attributes;
 using FitnessMeetupApi.Service.Models;
 using FitnessMeetupApi.Persistence;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitnessMeetupApi.Service.Controllers
 {
@@ -39,6 +40,7 @@ namespace FitnessMeetupApi.Service.Controllers
         [HttpPost]
         [Route("/v1/meetups")]
         [ValidateModelState]
+        [Authorize]
         public virtual IActionResult AddMeetup([FromBody]Meetup meetup)
         {
             if (meetups.CreateMeetup(meetup))
@@ -60,9 +62,10 @@ namespace FitnessMeetupApi.Service.Controllers
         [HttpPost]
         [Route("/v1/meetups/{id}/participants")]
         [ValidateModelState]
+        [Authorize]
         public virtual IActionResult AddParticipant([FromRoute][Required]long? id, [FromBody]User user)
         {
-            meetups.AddPartipant((int) id, (long) user.Id);
+            meetups.AddPartipant((int) id, user.Id);
             return Ok();
         }
 

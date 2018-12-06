@@ -5,7 +5,7 @@ namespace FitnessMeetupApi.Persistence
 {
     public class UserRepository: IUsersRepository
     {
-        public long AddUser(FitnessMeetupApi.Service.Models.User user)
+        public string AddUser(FitnessMeetupApi.Service.Models.User user)
         {
             var userEntity = User.ToUserEntity(user);
 
@@ -19,7 +19,7 @@ namespace FitnessMeetupApi.Persistence
             return userEntity.UserId;
         }
 
-        public FitnessMeetupApi.Service.Models.User GetUser(long userId)
+        public FitnessMeetupApi.Service.Models.User GetUser(string userId)
         {
             using (var context = new FitnessMeetupKasperContext())
             {

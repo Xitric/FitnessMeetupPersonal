@@ -5,7 +5,8 @@ const express_1 = require("express");
 const passport = require("passport");
 const loginBlocker_1 = require("./middleware/loginBlocker");
 const router = express_1.Router();
-router.get('/login', loginBlocker_1.default, passport.authenticate('auth0', { scope: 'openid email profile' }), function (req, res, next) {
+// @ts-ignore
+router.get('/login', loginBlocker_1.default, passport.authenticate('auth0', { audience: 'https://fitnessmeetupkasper.azurewebsites.net', scope: 'openid email profile' }), function (req, res, next) {
     res.redirect('/');
 });
 router.get('/callback', function (req, res, next) {

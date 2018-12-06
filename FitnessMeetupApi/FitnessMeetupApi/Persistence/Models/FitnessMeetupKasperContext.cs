@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace FitnessMeetupApi.Persistence.Models
 {
@@ -24,7 +25,7 @@ namespace FitnessMeetupApi.Persistence.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                //TODO: Inject Configuration somehow
                 optionsBuilder.UseSqlServer("Server=fitnessmeetupkasper.database.windows.net;Database=FitnessMeetupKasper;Trusted_Connection=False;User ID=FitnessAdmin;Password=95rEME5N^*DY8my");
             }
         }
@@ -50,7 +51,11 @@ namespace FitnessMeetupApi.Persistence.Models
                     .HasMaxLength(32)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Owner).HasColumnName("owner");
+                entity.Property(e => e.Owner)
+                    .IsRequired()
+                    .HasColumnName("owner")
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Sport)
                     .HasColumnName("sport")
@@ -82,7 +87,10 @@ namespace FitnessMeetupApi.Persistence.Models
 
                 entity.Property(e => e.MeetupId).HasColumnName("meetupId");
 
-                entity.Property(e => e.UserId).HasColumnName("userId");
+                entity.Property(e => e.UserId)
+                    .HasColumnName("userId")
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Meetup)
                     .WithMany(p => p.Participant)
@@ -110,6 +118,8 @@ namespace FitnessMeetupApi.Persistence.Models
             {
                 entity.Property(e => e.UserId)
                     .HasColumnName("userId")
+                    .HasMaxLength(32)
+                    .IsUnicode(false)
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.Email)

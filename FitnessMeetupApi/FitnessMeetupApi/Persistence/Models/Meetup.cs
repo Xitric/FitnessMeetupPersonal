@@ -15,7 +15,7 @@ namespace FitnessMeetupApi.Persistence.Models
         public string Description { get; set; }
         public string Location { get; set; }
         public DateTime Date { get; set; }
-        public long Owner { get; set; }
+        public string Owner { get; set; }
         public string Sport { get; set; }
 
         public User OwnerNavigation { get; set; }
