@@ -10,6 +10,7 @@ const passport = require("passport");
 const hbs = require("express-handlebars");
 const passport_auth0_1 = require("passport-auth0");
 const controllers_1 = require("./controllers");
+const ApiFactory_1 = require("./src/api/ApiFactory");
 const app = express();
 //Express session
 const session = {
@@ -30,7 +31,19 @@ let strategy = new passport_auth0_1.Strategy({
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL: '/callback'
 }, function (accessToken, refreshToken, extraParams, profile, done) {
-    return done(null, { user: profile, accessToken: accessToken, refreshToken: refreshToken });
+    let id = profile.id;
+    let name = profile.displayName;
+    let emails = profile.emails.map(element => element.value);
+    let email = emails.length >= 1 ? emails[0] : '';
+    let picture = profile['picture'];
+    let user = { id: id,
+        name: name,
+        email: email,
+        profilePicture: picture };
+    ApiFactory_1.ApiFactory.createUsersApi(accessToken).addUser(user).catch(error => {
+        console.log(error);
+    });
+    return done(null, { profile: user, accessToken: accessToken, refreshToken: refreshToken });
 });
 passport.use(strategy);
 app.use(passport.initialize());
@@ -42,12 +55,18 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
     done(null, user);
 });
+app.use(function (req, res, next) {
+    if (req.user) {
+        res.locals.profile = req.user.profile;
+    }
+    next();
+});
 // view engine setup
 app.engine('hbs', hbs({
     extname: '.hbs',
     defaultLayout: 'layout',
     layoutsDir: __dirname + '/views',
-    partialsDir: __dirname + '/views/partials'
+    partialsDir: __dirname + '/views'
 }));
 app.set('view engine', 'hbs');
 app.use(logger('dev'));

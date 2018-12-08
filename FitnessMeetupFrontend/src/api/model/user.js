@@ -32,6 +32,11 @@ User.attributeTypeMap = [
         "name": "email",
         "baseName": "email",
         "type": "string"
+    },
+    {
+        "name": "profilePicture",
+        "baseName": "profilePicture",
+        "type": "string"
     }
 ];
 exports.User = User;

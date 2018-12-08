@@ -1,12 +1,14 @@
 import {Router, Request, Response} from 'express';
+import {ApiFactory} from "../src/api/ApiFactory";
 
 const router = Router();
 
 router.get('/', (req: Request, res: Response) => {
-    res.render('index', {title: 'Fitness Meetup'});
-    // meetups.getMeetup(1).then(meetup => {
-    //     console.log(meetup);
-    // });
+    ApiFactory.createMeetupsApi().getUpcomingMeetups().then(result => {
+        res.locals.title = "Fitness Meetup";
+        res.locals.meetups = result.body;
+        res.render('index', res.locals);
+    });
 });
 
 export const HomeController = router;

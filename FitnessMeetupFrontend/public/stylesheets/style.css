@@ -1,18 +1,33 @@
 body {
     font-family: "Trebuchet MS", sans-serif;
-}
-
-.background {
     background-color: #f6f7f8;
+    margin: 0;
 }
 
-.pageTitle {
+.undecorated {
+    text-decoration: none;
+}
+
+.identityHeader {
     background-color: white;
     box-shadow: 0 1px 2px -2px gray;
     overflow: hidden;
     padding: 16px;
 }
 
+.hero {
+    width: 100%;
+}
+
+.hero img {
+    max-width: 100%;
+    height: auto;
+    /*display: inline-block;*/
+}
+
+/*Index*/
+
+/*Meetup details*/
 .meetupDetailsInfo {
     float: left;
 }
@@ -38,4 +53,83 @@ body {
 
 .detailContent {
     padding: 16px;
+}
+
+/*Upcoming meetups*/
+.meetupDiv {
+    background-color: white;
+    padding: 16px;
+    margin-top: 8px;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    -webkit-transition: box-shadow 0.4s;
+    color: #232F34;
+}
+
+.meetupDiv:hover {
+    box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.2);
+}
+
+.meetupTitle {
+    font-weight: bold;
+    margin: 0 0 0;
+}
+
+.sportLabel {
+    float: left;
+}
+
+.distanceLabel {
+    float: right;
+}
+
+.meetupInfo {
+    overflow: hidden;
+}
+
+.dateLabel {
+    margin-bottom: 0;
+}
+
+/*Profile*/
+.profileImage {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    float: left;
+}
+
+.profileDetails {
+    float: left;
+    margin-left: 24px;
+}
+
+/*Navigation*/
+.navBar {
+    padding: 0 16px;
+    background-color: #29293d;
+}
+
+.navBar::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.navButton {
+    color: white;
+    text-decoration: none;
+    padding: 16px 16px 16px 16px;
+    display: inline-block;
+}
+
+.navButton:hover {
+    background-color: #15151e;
+}
+
+.leftAlignNavButton {
+    float: left;
+}
+
+.rightAlignNavButton {
+    float: right;
 }

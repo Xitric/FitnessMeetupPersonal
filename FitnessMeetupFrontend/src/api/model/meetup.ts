@@ -14,7 +14,7 @@ import { Location } from './location';
 import { User } from './user';
 
 export class Meetup {
-    'id': number;
+    'id'?: number;
     'title': string;
     'description'?: string;
     'sport'?: string;

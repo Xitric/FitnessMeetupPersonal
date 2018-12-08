@@ -1,16 +1,11 @@
 import {Router, Request, Response} from 'express';
-import secured from './middleware/secured';
-import {UsersApi, User} from './../src/api';
+import ensureProfile from './middleware/ensureProfile';
 
 const router = Router();
 
-router.get('/', secured, (req: Request, res: Response) => {
-    let users = new UsersApi('https://localhost:44381/v1');
-    users.accessToken = req.user.accessToken;
-    users.getUser('110786492158656662718').then(value => {
-        console.log(value);
-        res.send(req.user);
-    });
+router.get('/', ensureProfile, (req: Request, res: Response) => {
+    res.locals.title = res.locals.profile.name;
+    res.render('profile', res.locals);
 });
 
 export const UserController = router;

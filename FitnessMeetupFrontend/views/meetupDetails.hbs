@@ -1,5 +1,6 @@
-<div class="background">
-    <div class="pageTitle">
+{{> navigation}}
+<div>
+    <div class="identityHeader">
         <div class="meetupDetailsInfo">
             <h1>{{meetup.title}}</h1>
             <div>
@@ -9,7 +10,17 @@
         </div>
         <div class="joinDiv" align="right">
             <div>
-                <button class="joinButton">Join</button>
+                {{#if profile}}
+                    {{#if participates}}
+                        <p>You have already joined this meetup.</p>
+                    {{else}}
+                        <form action="/meetups/{{meetup.id}}/join">
+                            <button class="joinButton" type="submit">Join</button>
+                        </form>
+                    {{/if}}
+                {{else}}
+                    <p>You must be signed in to join a meetup.</p>
+                {{/if}}
                 <p>Only TODO spots left!</p>
             </div>
         </div>
@@ -18,5 +29,11 @@
         <h3>Details</h3>
         <p>{{meetup.description}}</p>
         <h3>Participants ({{meetup.participants.length}})</h3>
+        <ul>
+            {{#each meetup.participants}}
+                <!--TODO: Link to profile page-->
+                <li><a class="undecorated" href="/">{{this.name}}</a></li>
+            {{/each}}
+        </ul>
     </div>
 </div>

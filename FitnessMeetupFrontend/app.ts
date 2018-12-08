@@ -11,6 +11,8 @@ import {Strategy} from 'passport-auth0';
 import {AuthenticationController, HomeController, MeetupsController, UserController} from './controllers';
 import {SessionOptions} from 'express-session';
 import {Express} from 'express';
+import {User} from "./src/api/model/user";
+import {ApiFactory} from "./src/api/ApiFactory";
 
 const app: Express = express();
 
@@ -36,7 +38,20 @@ let strategy: Strategy = new Strategy({
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL: '/callback'
 }, function (accessToken, refreshToken, extraParams, profile, done) {
-    return done(null, {user: profile, accessToken: accessToken, refreshToken: refreshToken});
+    let id = profile.id;
+    let name = profile.displayName;
+    let emails = profile.emails.map(element => element.value);
+    let email = emails.length >= 1 ? emails[0] : '';
+    let picture = profile['picture'];
+    let user = {id: id,
+        name: name,
+        email: email,
+        profilePicture: picture} as User;
+
+    ApiFactory.createUsersApi(accessToken).addUser(user).catch(error => {
+        console.log(error);
+    });
+    return done(null, {profile: user, accessToken: accessToken, refreshToken: refreshToken});
 });
 
 passport.use(strategy);
@@ -52,12 +67,19 @@ passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
+app.use(function (req, res, next) {
+    if (req.user) {
+        res.locals.profile = req.user.profile;
+    }
+    next();
+});
+
 // view engine setup
 app.engine('hbs', hbs( {
     extname: '.hbs',
     defaultLayout: 'layout',
     layoutsDir: __dirname + '/views',
-    partialsDir: __dirname + '/views/partials'
+    partialsDir: __dirname + '/views'
 }));
 app.set('view engine', 'hbs');
 

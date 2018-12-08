@@ -15,6 +15,7 @@ export class User {
     'id': string;
     'name': string;
     'email': string;
+    'profilePicture': string;
 
     static discriminator: string | undefined = undefined;
 
@@ -32,6 +33,11 @@ export class User {
         {
             "name": "email",
             "baseName": "email",
+            "type": "string"
+        },
+        {
+            "name": "profilePicture",
+            "baseName": "profilePicture",
             "type": "string"
         }    ];
 
