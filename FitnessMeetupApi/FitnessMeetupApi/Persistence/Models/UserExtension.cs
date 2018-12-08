@@ -13,7 +13,8 @@
             {
                 Id = entity.UserId,
                 Name = entity.Name,
-                Email = entity.Email
+                Email = entity.Email,
+                ProfilePicture = entity.Picture
             };
         }
 
@@ -28,7 +29,8 @@
             {
                 UserId = dto.Id,
                 Name = dto.Name,
-                Email = dto.Email
+                Email = dto.Email,
+                Picture = dto.ProfilePicture
             };
         }
     }

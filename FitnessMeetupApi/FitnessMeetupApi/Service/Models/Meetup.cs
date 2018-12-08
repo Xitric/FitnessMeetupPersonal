@@ -27,7 +27,6 @@ namespace FitnessMeetupApi.Service.Models
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [Required]
         [DataMember(Name="id")]
         public long? Id { get; set; }
 

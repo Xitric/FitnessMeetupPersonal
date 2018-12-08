@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace FitnessMeetupApi
 {
@@ -26,14 +22,26 @@ namespace FitnessMeetupApi
         {
             services.AddCors();
             services.AddPersistence();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer( options => {
+            })
+            .AddJwtBearer( options => {
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = Configuration["Auth0:Authority"],
+                    ValidAudience = Configuration["Auth0:Audience"]
+                };
                 //Using this, the middleware can automatically fetch the public key online to validate the signing of the JWT
                 options.Authority = Configuration["Auth0:Authority"];
                 //Ensure that the JWT was issued to this API
                 options.Audience = Configuration["Auth0:Audience"];
+                options.RequireHttpsMetadata = true;
             });
             services.AddMvc();
         }

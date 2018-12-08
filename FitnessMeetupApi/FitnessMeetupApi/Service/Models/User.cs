@@ -46,6 +46,13 @@ namespace FitnessMeetupApi.Service.Models
         public string Email { get; set; }
 
         /// <summary>
+        /// Gets or Sets ProfilePicture
+        /// </summary>
+        [Required]
+        [DataMember(Name="profilePicture")]
+        public string ProfilePicture { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -56,6 +63,7 @@ namespace FitnessMeetupApi.Service.Models
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Email: ").Append(Email).Append("\n");
+            sb.Append("  ProfilePicture: ").Append(ProfilePicture).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -106,6 +114,11 @@ namespace FitnessMeetupApi.Service.Models
                     Email == other.Email ||
                     Email != null &&
                     Email.Equals(other.Email)
+                ) && 
+                (
+                    ProfilePicture == other.ProfilePicture ||
+                    ProfilePicture != null &&
+                    ProfilePicture.Equals(other.ProfilePicture)
                 );
         }
 
@@ -125,6 +138,8 @@ namespace FitnessMeetupApi.Service.Models
                     hashCode = hashCode * 59 + Name.GetHashCode();
                     if (Email != null)
                     hashCode = hashCode * 59 + Email.GetHashCode();
+                    if (ProfilePicture != null)
+                    hashCode = hashCode * 59 + ProfilePicture.GetHashCode();
                 return hashCode;
             }
         }

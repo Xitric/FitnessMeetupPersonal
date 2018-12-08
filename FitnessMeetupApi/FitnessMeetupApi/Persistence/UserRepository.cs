@@ -3,28 +3,37 @@ using FitnessMeetupApi.Persistence.Models;
 
 namespace FitnessMeetupApi.Persistence
 {
-    public class UserRepository: IUsersRepository
+    public class UserRepository : IUsersRepository
     {
-        public string AddUser(FitnessMeetupApi.Service.Models.User user)
+        public string AddUser(Service.Models.User user)
         {
             var userEntity = User.ToUserEntity(user);
 
             using (var context = new FitnessMeetupKasperContext())
-            {   
-                if (context.User.Find(userEntity.UserId) == null) {
+            {
+                User existingUser = context.User.Find(userEntity.UserId);
+
+                if (existingUser == null)
+                {
                     context.User.Add(userEntity);
-                    context.SaveChanges();
                 }
+                else
+                {
+                    existingUser.Name = user.Name;
+                    existingUser.Email = user.Email;
+                    existingUser.Picture = user.ProfilePicture;
+                }
+
+                context.SaveChanges();
             }
             return userEntity.UserId;
         }
 
-        public FitnessMeetupApi.Service.Models.User GetUser(string userId)
+        public Service.Models.User GetUser(string userId)
         {
             using (var context = new FitnessMeetupKasperContext())
             {
                 return User.ToUserDto(context.User.Find(userId));
-                
             }
         }
     }

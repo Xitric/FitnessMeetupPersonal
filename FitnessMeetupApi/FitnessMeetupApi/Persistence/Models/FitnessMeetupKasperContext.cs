@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace FitnessMeetupApi.Persistence.Models
 {
@@ -25,7 +24,7 @@ namespace FitnessMeetupApi.Persistence.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //TODO: Inject Configuration somehow
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=fitnessmeetupkasper.database.windows.net;Database=FitnessMeetupKasper;Trusted_Connection=False;User ID=FitnessAdmin;Password=95rEME5N^*DY8my");
             }
         }
@@ -54,7 +53,7 @@ namespace FitnessMeetupApi.Persistence.Models
                 entity.Property(e => e.Owner)
                     .IsRequired()
                     .HasColumnName("owner")
-                    .HasMaxLength(32)
+                    .HasMaxLength(64)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Sport)
@@ -72,7 +71,7 @@ namespace FitnessMeetupApi.Persistence.Models
                     .WithMany(p => p.Meetup)
                     .HasForeignKey(d => d.Owner)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Meetup_User_userId_fk");
+                    .HasConstraintName("Meetup_User_idTemp_fk");
 
                 entity.HasOne(d => d.SportNavigation)
                     .WithMany(p => p.Meetup)
@@ -89,7 +88,7 @@ namespace FitnessMeetupApi.Persistence.Models
 
                 entity.Property(e => e.UserId)
                     .HasColumnName("userId")
-                    .HasMaxLength(32)
+                    .HasMaxLength(64)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Meetup)
@@ -100,7 +99,7 @@ namespace FitnessMeetupApi.Persistence.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Participant)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("Participant_User_userId_fk");
+                    .HasConstraintName("Participant_User_idTemp_fk");
             });
 
             modelBuilder.Entity<Sport>(entity =>
@@ -116,9 +115,13 @@ namespace FitnessMeetupApi.Persistence.Models
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.HasIndex(e => e.UserId)
+                    .HasName("User_idTemp_uindex")
+                    .IsUnique();
+
                 entity.Property(e => e.UserId)
                     .HasColumnName("userId")
-                    .HasMaxLength(32)
+                    .HasMaxLength(64)
                     .IsUnicode(false)
                     .ValueGeneratedNever();
 
@@ -132,6 +135,11 @@ namespace FitnessMeetupApi.Persistence.Models
                     .IsRequired()
                     .HasColumnName("name")
                     .HasMaxLength(96)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Picture)
+                    .HasColumnName("picture")
+                    .HasMaxLength(256)
                     .IsUnicode(false);
             });
         }
