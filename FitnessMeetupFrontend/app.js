@@ -66,7 +66,7 @@ app.engine('hbs', hbs({
     extname: '.hbs',
     defaultLayout: 'layout',
     layoutsDir: __dirname + '/views',
-    partialsDir: __dirname + '/views'
+    partialsDir: __dirname + '/views/partials'
 }));
 app.set('view engine', 'hbs');
 app.use(logger('dev'));
@@ -78,7 +78,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', controllers_1.HomeController);
 app.use('/', controllers_1.AuthenticationController);
 app.use('/meetups', controllers_1.MeetupsController);
-app.use('/user', controllers_1.UserController);
+app.use('/users', controllers_1.UserController);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(error(404));

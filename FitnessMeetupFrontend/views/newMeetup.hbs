@@ -1,26 +1,45 @@
-<div class="container">
+<div class="identityHeader">
     <h1>New Meetup</h1>
+</div>
+<div class="pageContent">
     <form>
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="titleBox" required/>
+        <div class="meetupMetaGroup">
+            <!--Title-->
+            <div class="formGroup titleField">
+                <h2 class="labelHeader">
+                    <label for="titleBox">Title</label>
+                </h2>
+                <input class="formField" type="text" name="titleBox" id="titleBox" required/>
+            </div>
+            <!--Sport-->
+            <div class="formGroup metaField">
+                <h2 class="labelHeader">
+                    <label for="sportSelect">Sport</label>
+                </h2>
+                <select class="formField" name="sportSelect" id="sportSelect">
+                    <option>any</option>
+                    {{#each sports}}
+                        <option>{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <!--Date-->
+            <div class="formGroup metaField">
+                <h2 class="labelHeader">
+                    <label for="datePicker">Date</label>
+                </h2>
+                <input class="formField" type="datetime-local" name="datePicker" id="datePicker"/>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="name">Description</label>
-            <input type="text" class="form-control" name="descriptionBox " id="description" required/>
+        <!--Description-->
+        <div class="formGroup">
+            <h2 class="labelHeader">
+                <label for="descriptionBox">Description</label>
+            </h2>
+            <textarea class="formField descriptionField" name="descriptionBox" id="descriptionBox" required></textarea>
         </div>
-        <div class="form-group">
-            <label for="date"> Date</label>
-            <input type="datetime-local" id="date" name="datePicker"/>
+        <div class="formGroup">
+            <button class="button" name="submitButton" type="submit">Host meetup!</button>
         </div>
-        <div class="form-group">
-            <select name="sportSelect" class="form-control">
-                <option>any</option>
-                {{#each sports}}
-                    <option>{{this}}</option>
-                {{/each}}
-            </select>
-        </div>
-        <button name="submitButton" type="submit">Submit</button>
     </form>
 </div>

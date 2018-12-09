@@ -26,7 +26,7 @@ router.get('/callback', function (req: Request, res: Response, next: NextFunctio
             }
             const returnTo = req.session.returnTo;
             delete req.session.returnTo;
-            res.redirect(returnTo || '/user');
+            res.redirect(returnTo || '/users/me');
         });
     })(req, res, next);
 });

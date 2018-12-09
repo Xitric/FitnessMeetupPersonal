@@ -1,0 +1,11 @@
+<div class="navBar">
+    <a class="navButton leftAlignNavButton" href="/">Home</a>
+    <a class="navButton leftAlignNavButton" href="/meetups">Find meetups</a>
+    <a class="navButton leftAlignNavButton" href="/meetups/new">Host meetup</a>
+    {{#if profile}}
+        <a class="navButton rightAlignNavButton" href="/logout">Log out</a>
+        <a class="navButton rightAlignNavButton" href="/users/me">Profile</a>
+    {{else}}
+        <a class="navButton rightAlignNavButton" href="/login">Log in</a>
+    {{/if}}
+</div>

@@ -79,7 +79,7 @@ app.engine('hbs', hbs( {
     extname: '.hbs',
     defaultLayout: 'layout',
     layoutsDir: __dirname + '/views',
-    partialsDir: __dirname + '/views'
+    partialsDir: __dirname + '/views/partials'
 }));
 app.set('view engine', 'hbs');
 
@@ -93,7 +93,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', HomeController);
 app.use('/', AuthenticationController);
 app.use('/meetups', MeetupsController);
-app.use('/user', UserController);
+app.use('/users', UserController);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

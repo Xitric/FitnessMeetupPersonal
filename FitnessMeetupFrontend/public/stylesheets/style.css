@@ -22,10 +22,73 @@ body {
 .hero img {
     max-width: 100%;
     height: auto;
-    /*display: inline-block;*/
+}
+
+.pageContent {
+    padding: 48px;
+}
+
+.columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    margin-top: 22px;
+    margin-bottom: 4px;
+    background-color: #4189c7;
+    border: none;
+    color: white;
+    padding: 8px 24px;
+    font-size: 1.5em;
+    border-radius: 4px;
+}
+
+.formField {
+    font-size: 1.2em;
+    padding: 8px;
+    border: none;
+    border-bottom: 1px solid #2b2b2b;
+    background: none;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.formField:focus {
+    outline: none;
+    border-bottom: 2px solid #4189c7;
 }
 
 /*Index*/
+
+/*Meetups*/
+.meetupsList {
+    flex-grow: 1;
+}
+
+.sportsList {
+    background-color: white;
+    padding: 16px;
+}
+
+.sportElement {
+    position: relative;
+    height: 150px;
+    margin-top: 8px;
+}
+
+.sportElement img {
+    max-height: 100%;
+}
+
+.sportElement p {
+    position: absolute;
+    left: 16px;
+    color: white;
+    font-size: 2em;
+}
 
 /*Meetup details*/
 .meetupDetailsInfo {
@@ -38,17 +101,6 @@ body {
 
 .joinDiv {
     float: right;
-}
-
-.joinButton {
-    margin-top: 22px;
-    margin-bottom: 4px;
-    background-color: #4189c7;
-    border: none;
-    color: white;
-    padding: 8px 24px;
-    font-size: 1.5em;
-    border-radius: 4px;
 }
 
 .detailContent {
@@ -88,6 +140,32 @@ body {
 
 .dateLabel {
     margin-bottom: 0;
+}
+
+/*New meetup*/
+.formGroup {
+    padding: 16px;
+}
+
+.labelHeader {
+    margin-bottom: 4px;
+}
+
+.meetupMetaGroup {
+    display: flex;
+    justify-content: space-between;
+}
+
+.titleField {
+    flex-grow: 3;
+}
+
+.metaField {
+    flex-grow: 1;
+}
+
+.descriptionField {
+    min-height: 150px;
 }
 
 /*Profile*/

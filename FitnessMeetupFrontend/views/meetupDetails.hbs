@@ -1,10 +1,9 @@
-{{> navigation}}
 <div>
     <div class="identityHeader">
         <div class="meetupDetailsInfo">
             <h1>{{meetup.title}}</h1>
             <div>
-                <p>Hosted by: {{meetup.owner.name}}</p>
+                <p>Hosted by: <a class="undecorated" href="/users/{{meetup.owner.id}}">{{meetup.owner.name}}</a></p>
                 <p>When: {{meetup.date}}</p>
             </div>
         </div>
@@ -15,7 +14,7 @@
                         <p>You have already joined this meetup.</p>
                     {{else}}
                         <form action="/meetups/{{meetup.id}}/join">
-                            <button class="joinButton" type="submit">Join</button>
+                            <button class="button" type="submit">Join</button>
                         </form>
                     {{/if}}
                 {{else}}
@@ -31,8 +30,7 @@
         <h3>Participants ({{meetup.participants.length}})</h3>
         <ul>
             {{#each meetup.participants}}
-                <!--TODO: Link to profile page-->
-                <li><a class="undecorated" href="/">{{this.name}}</a></li>
+                <li><a class="undecorated" href="/users/{{this.id}}">{{this.name}}</a></li>
             {{/each}}
         </ul>
     </div>
