@@ -35,7 +35,7 @@ router.get("/callback", (req: Request, res: Response, next: NextFunction) => {
 
 router.get("/logout", (req: Request, res: Response) => {
     req.logout();
-    res.redirect("https://fitness-meetup.eu.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3000/");
+    res.redirect("https://fitness-meetup.eu.auth0.com/v2/logout?returnTo=" + process.env.AUTH0_CALLBACK_URL);
 });
 
 export default router;

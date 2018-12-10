@@ -45,7 +45,7 @@ const strategy: Strategy = new Strategy({
     domain: process.env.AUTH0_DOMAIN,
     clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
-    callbackURL: process.env.AUTH0_CALLBACK_URL
+    callbackURL: process.env.AUTH0_CALLBACK_URL + "/callback"
 }, function (accessToken: string, refreshToken: string, extraParams: ExtraVerificationParams, profile: Profile, done: any): void {
     const id: string = profile.id;
     const name: string = profile.displayName;
