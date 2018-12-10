@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>FitnessMeetupFrontend</Name>
+    <RootNamespace>FitnessMeetupFrontend</RootNamespace>
+    <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <Environment>AUTH0_DOMAIN=fitness-meetup.eu.auth0.com
+AUTH0_CLIENT_ID=UVrK9ErJ4PdZN07kFO0X8umBz804GUm6
+AUTH0_CLIENT_SECRET=Aq4bzp4p_K9QTrwTYmS01C6hPTBHbiPtEX-_FrwiPZO0pWhIAwNATUA3DrtAtgpP
+SESSION_SECRET=7BFB6ogkpX%P614BngqL^tzYV3x*4al8FPnlUDTaBR7Vj8j5^q&amp;E*dFk2Mmv5V^G
+BACKEND_API=http://localhost:55551/v1
+AUTH0_CALLBACK_URL=http://localhost:3000/callback</Environment>
+    <NameOfLastUsedPublishProfile>FitnessMeetup - Web Deploy</NameOfLastUsedPublishProfile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>a16d07ad-221d-450e-8af5-bdbccd2e9533</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>app.js</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <NodejsPort>3000</NodejsPort>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
+    <EnableTypeScript>true</EnableTypeScript>
+    <StartWebBrowser>True</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="routes\authentication.ts" />
+    <TypeScriptCompile Include="routes\index.ts" />
+    <TypeScriptCompile Include="routes\meetups.ts" />
+    <TypeScriptCompile Include="routes\middleware\ensureProfile.ts" />
+    <TypeScriptCompile Include="routes\middleware\loginBlocker.ts" />
+    <TypeScriptCompile Include="routes\users.ts" />
+    <None Include="FitnessMeetup - Web Deploy.pubxml" />
+    <Content Include="public\images\crossfit.png" />
+    <Content Include="public\images\cycling.png" />
+    <Content Include="public\images\FrontPageHero.png" />
+    <Content Include="public\images\jogging.png" />
+    <Content Include="public\images\meditation.png" />
+    <Content Include="public\images\running.png" />
+    <Content Include="public\images\swimming.png" />
+    <Content Include="public\images\walking.png" />
+    <Content Include="public\images\weightlifting.png" />
+    <Content Include="public\images\yoga.png" />
+    <Content Include="tsconfig.json" />
+    <Content Include="package.json" />
+    <Content Include="public\stylesheets\main.css" />
+    <Content Include="README.md" />
+    <Content Include="views\error.hbs" />
+    <Content Include="views\index.hbs" />
+    <Content Include="views\layout.hbs" />
+    <Content Include="views\meetupDetails.hbs" />
+    <Content Include="views\meetups.hbs" />
+    <Content Include="views\newMeetup.hbs" />
+    <Content Include="views\partials\navigation.hbs" />
+    <Content Include="views\partials\upcomingMeetups.hbs" />
+    <Content Include="views\profile.hbs" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config" />
+    <TypeScriptCompile Include="src\api\api.ts" />
+    <TypeScriptCompile Include="src\api\ApiFactory.ts" />
+    <TypeScriptCompile Include="src\api\api\apis.ts" />
+    <TypeScriptCompile Include="src\api\api\meetupsApi.ts" />
+    <TypeScriptCompile Include="src\api\api\sportsApi.ts" />
+    <TypeScriptCompile Include="src\api\api\usersApi.ts" />
+    <TypeScriptCompile Include="src\api\model\location.ts" />
+    <TypeScriptCompile Include="src\api\model\meetup.ts" />
+    <TypeScriptCompile Include="src\api\model\models.ts" />
+    <TypeScriptCompile Include="src\api\model\user.ts" />
+    <TypeScriptCompile Include="src\model\Profile.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="routes\middleware\" />
+    <Folder Include="src\" />
+    <Folder Include="public\" />
+    <Folder Include="public\images\" />
+    <Folder Include="public\javascripts\" />
+    <Folder Include="public\stylesheets\" />
+    <Folder Include="routes\" />
+    <Folder Include="src\api\" />
+    <Folder Include="src\api\api\" />
+    <Folder Include="src\api\model\" />
+    <Folder Include="src\model\" />
+    <Folder Include="views\" />
+    <Folder Include="views\partials\" />
+  </ItemGroup>
+  <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

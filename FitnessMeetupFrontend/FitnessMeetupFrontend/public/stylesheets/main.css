@@ -1,4 +1,4 @@
-body {
+﻿body {
     font-family: "Trebuchet MS", sans-serif;
     background-color: #f6f7f8;
     margin: 0;
@@ -113,7 +113,7 @@ body {
     padding: 16px;
     margin-top: 8px;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-    -webkit-transition: box-shadow 0.4s;
+    transition: box-shadow 0.4s;
     color: #232F34;
 }
 

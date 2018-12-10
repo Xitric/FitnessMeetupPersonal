@@ -1,23 +1,23 @@
-import {Router, Request, Response} from 'express';
+import {Router, Request, Response} from "express";
 import {ApiFactory} from "../src/api/ApiFactory";
 import ensureProfile from "./middleware/ensureProfile";
 
-const router = Router();
+const router: Router = Router();
 
-router.get('/new', ensureProfile, async (req: Request, res: Response) => {
-    res.locals.title = 'New meetup';
+router.get("/new", ensureProfile, async (_req: Request, res: Response) => {
+    res.locals.title = "New meetup";
     res.locals.sports = (await ApiFactory.createSportsApi().getAllSports()).body;
-    res.render('newMeetup', res.locals);
+    res.render("newMeetup", res.locals);
 });
 
-router.get('/:id/join', ensureProfile, (req: Request, res: Response) => {
+router.get("/:id/join", ensureProfile, (req: Request, res: Response) => {
     ApiFactory.createMeetupsApi(req.user.accessToken).addParticipant(req.params.id, res.locals.profile).then(result => {
-        res.redirect('/meetups/' + req.params.id);
+        res.redirect("/meetups/" + req.params.id);
     });
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
-    //TODO: Check everywhere that we use ids from the url if the input is safe?
+router.get("/:id", async (req: Request, res: Response) => {
+    // todo: Check everywhere that we use ids from the url if the input is safe?
     res.locals.meetup = (await ApiFactory.createMeetupsApi().getMeetup(req.params.id)).body;
     res.locals.title = res.locals.meetup.title;
 
@@ -27,11 +27,11 @@ router.get('/:id', async (req: Request, res: Response) => {
         }
     }
 
-    res.render('meetupDetails', res.locals);
+    res.render("meetupDetails", res.locals);
 });
 
-router.get('/', (async (req: Request, res: Response) => {
-    let sport = req.query.sport;
+router.get("/", (async (req: Request, res: Response) => {
+    let sport: string = req.query.sport;
     if (! /^[a-zA-Z]+$/.test(sport)) {
         sport = undefined;
     }
@@ -39,7 +39,7 @@ router.get('/', (async (req: Request, res: Response) => {
     res.locals.meetups = (await ApiFactory.createMeetupsApi().getUpcomingMeetups(0, 20, sport)).body;
     res.locals.sports = (await ApiFactory.createSportsApi().getAllSports()).body;
     res.locals.title = "Upcoming meetups";
-    res.render('meetups', res.locals);
+    res.render("meetups", res.locals);
 }));
 
-export const MeetupsController = router;
+export default router;
