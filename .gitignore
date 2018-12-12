@@ -557,3 +557,6 @@ ASALocalRun/
 # End of https://www.gitignore.io/api/node,webstorm,intellij,visualstudio,visualstudiocode
 *.js.map
 *.js
+
+FitnessMeetupFrontend/FitnessMeetupFrontend/cert\.crt
+FitnessMeetupFrontend/FitnessMeetupFrontend/cert\.key

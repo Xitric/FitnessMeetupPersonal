@@ -4,11 +4,13 @@ import path = require("path");
 import expressSession = require("express-session");
 import passport = require("passport");
 import hbs = require("express-handlebars");
+import https = require("https");
+import fs = require("fs");
 
 import { Express, Request, Response, NextFunction } from "express";
 import { SessionOptions } from "express-session";
 import { Strategy, ExtraVerificationParams } from "passport-auth0";
-import { Server } from "http";
+import { Server, ServerOptions } from "https";
 import { User } from "./src/api/api";
 import { ApiFactory } from "./src/api/ApiFactory";
 import { Profile } from "./src/model/Profile";
@@ -25,18 +27,15 @@ const session: SessionOptions = {
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {}
+    cookie: {
+        secure: true,
+        httpOnly: true,
+        // this helps mitigate CSRF attacks. The cookie is allowed to be sent when following links, but
+        // only for GET requests that should have no side effects! A CSRF 'attack' that merely displays
+        // a page to a user is quite harmless.
+        sameSite: "lax"
+    }
 };
-
-// we ensure that cookies are safe in production, and that we do not need https in development
-if (app.get("env") === "production") {
-    session.cookie.secure = true;
-    session.cookie.httpOnly = true;
-    // this helps mitigate CSRF attacks. The cookie is allowed to be sent when following links, but
-    // only for GET requests that should have no side effects! A CSRF 'attack' that merely displays
-    // a page to a user is quite harmless.
-    session.cookie.sameSite = "lax";
-}
 
 app.use(expressSession(session));
 
@@ -137,6 +136,11 @@ app.use((err: any, _req: Request, res: Response) => {
 
 app.set("port", process.env.PORT || 3000);
 
-const server: Server = app.listen(app.get("port"), function (): void {
-    debug("Express server listening on port " + server.address().port);
+//Configure https with self-signed certificate and private key
+const key = fs.readFileSync("cert.key").toString();
+const certificate = fs.readFileSync("cert.crt").toString();
+const serverOptions: ServerOptions = { key: key, cert: certificate };
+
+const server: Server = https.createServer(serverOptions, app).listen(app.get("port"), () => {
+    debug("Https express server listening on port " + server.address().port);
 });
