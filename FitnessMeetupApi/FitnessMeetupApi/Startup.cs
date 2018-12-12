@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FitnessMeetupApi.Service.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,12 +23,15 @@ namespace FitnessMeetupApi
         {
             services.AddCors();
             services.AddPersistence();
+
+            //Security
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer( options => {
+            .AddJwtBearer(options =>
+            {
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     ValidateIssuer = true,
@@ -43,6 +47,15 @@ namespace FitnessMeetupApi
                 options.Audience = Configuration["Auth0:Audience"];
                 options.RequireHttpsMetadata = true;
             });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("write:meetups", policy =>
+                    policy.Requirements.Add(new ScopeRequirement("write:meetups", $"{Configuration["Auth0:Authority"]}/")));
+                options.AddPolicy("write:profile", policy =>
+                    policy.Requirements.Add(new ScopeRequirement("write:profile", $"{Configuration["Auth0:Authority"]}/")));
+            });
+            services.AddAuthorizationHandlers();
+
             services.AddMvc();
         }
 

@@ -15,7 +15,7 @@ using FitnessMeetupApi.Service.Attributes;
 using FitnessMeetupApi.Service.Models;
 using FitnessMeetupApi.Persistence;
 using Microsoft.AspNetCore.Authorization;
-using FitnessMeetupApi.Service.Extensions;
+using FitnessMeetupApi.Service.Authorization.Extensions;
 
 namespace FitnessMeetupApi.Service.Controllers
 {
@@ -40,10 +40,11 @@ namespace FitnessMeetupApi.Service.Controllers
         [HttpPost]
         [Route("/v1/users")]
         [ValidateModelState]
-        [Authorize]
+        [Authorize(Policy = "write:profile")]
         public virtual IActionResult AddUser([FromBody]User user)
         {
-            if (User.UserId() == user.Id)
+            //Ensure that users can only edit their own profiles
+            if (User.HasId(user.Id))
             {
                 users.AddUser(user);
                 return new ObjectResult(users.GetUser(user.Id));

@@ -17,6 +17,7 @@ using FitnessMeetupApi.Service.Models;
 using FitnessMeetupApi.Persistence;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using FitnessMeetupApi.Service.Authorization.Extensions;
 
 namespace FitnessMeetupApi.Service.Controllers
 {
@@ -40,16 +41,24 @@ namespace FitnessMeetupApi.Service.Controllers
         [HttpPost]
         [Route("/v1/meetups")]
         [ValidateModelState]
-        [Authorize]
+        [Authorize(Policy = "write:meetups")]
         public virtual IActionResult AddMeetup([FromBody]Meetup meetup)
         {
-            if (meetups.CreateMeetup(meetup))
+            //Ensure that users can only post meetups in their own name
+            if (User.HasId(meetup.Owner.Id))
             {
-                return Ok();
+                if (meetups.CreateMeetup(meetup))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
             else
             {
-                return NotFound();
+                return Unauthorized();
             }
         }
 
@@ -62,11 +71,19 @@ namespace FitnessMeetupApi.Service.Controllers
         [HttpPost]
         [Route("/v1/meetups/{id}/participants")]
         [ValidateModelState]
-        [Authorize]
+        [Authorize(Policy = "write:meetups")]
         public virtual IActionResult AddParticipant([FromRoute][Required]long? id, [FromBody]User user)
         {
-            meetups.AddPartipant((int) id, user.Id);
-            return Ok();
+            //Ensure that users can only join meetups in their own name
+            if (User.HasId(user.Id))
+            {
+                meetups.AddPartipant((int)id, user.Id);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         /// <summary>
