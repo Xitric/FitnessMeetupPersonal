@@ -12,6 +12,10 @@ namespace FitnessMeetupApi.Persistence
         {
             using (var context = new FitnessMeetupKasperContext())
             {
+                if (context.Participant.Any(p => p.MeetupId == meetupId && p.UserId == userId)) {
+                    return;
+                }
+
                 Participant participant = new Participant()
                 {
                     MeetupId = meetupId,
@@ -25,7 +29,7 @@ namespace FitnessMeetupApi.Persistence
             }
         }
 
-        public bool CreateMeetup(FitnessMeetupApi.Service.Models.Meetup meetup)
+        public bool CreateMeetup(Service.Models.Meetup meetup)
         {
             var meetupEntity = Meetup.ToMeetupEntity(meetup);
 
@@ -36,11 +40,11 @@ namespace FitnessMeetupApi.Persistence
                 context.SaveChanges();
 
             }
-      
-            return true;      
+
+            return true;
         }
 
-        public FitnessMeetupApi.Service.Models.Meetup GetMeetup(long id)
+        public Service.Models.Meetup GetMeetup(long id)
         {
             using (var context = new FitnessMeetupKasperContext())
             {
@@ -48,13 +52,14 @@ namespace FitnessMeetupApi.Persistence
                     context.Meetup
                     .Include(m => m.OwnerNavigation)
                     .Include(m => m.Participant)
+                        .ThenInclude(p => p.User)
                     .ToList()
                     .Where(m => m.MeetupId == id)
                     .FirstOrDefault());
             }
         }
 
-        public IEnumerable<FitnessMeetupApi.Service.Models.Meetup> GetMeetups(int offset, int count, string sport)
+        public IEnumerable<Service.Models.Meetup> GetMeetups(int offset, int count, string sport)
         {
             using (var context = new FitnessMeetupKasperContext())
             {
@@ -72,6 +77,7 @@ namespace FitnessMeetupApi.Persistence
                     .Take(count)
                     .Include(m => m.OwnerNavigation)
                     .Include(m => m.Participant)
+                        .ThenInclude(p => p.User)
                     .Select(m => Meetup.ToMeetupDto(m))
                     .ToList();
             }

@@ -5,7 +5,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>FitnessMeetupFrontend</Name>
     <RootNamespace>FitnessMeetupFrontend</RootNamespace>
-    <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
+    <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
     <Environment>AUTH0_DOMAIN=fitness-meetup.eu.auth0.com
 AUTH0_CLIENT_ID=UVrK9ErJ4PdZN07kFO0X8umBz804GUm6
