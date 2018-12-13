@@ -6,6 +6,7 @@ import passport = require("passport");
 import hbs = require("express-handlebars");
 import https = require("https");
 import fs = require("fs");
+import helmet = require("helmet");
 
 import { Express, Request, Response, NextFunction } from "express";
 import { SessionOptions } from "express-session";
@@ -27,13 +28,15 @@ const session: SessionOptions = {
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    name: "fitnessSession",
     cookie: {
         secure: true,
         httpOnly: true,
         // this helps mitigate CSRF attacks. The cookie is allowed to be sent when following links, but
         // only for GET requests that should have no side effects! A CSRF 'attack' that merely displays
         // a page to a user is quite harmless.
-        sameSite: "lax"
+        sameSite: "lax",
+        maxAge: 600000 //10 minutes
     }
 };
 
@@ -84,6 +87,15 @@ app.use(function (req: Request, res: Response, next: NextFunction): void {
     next();
 });
 
+// enforce https and other recommended headers
+app.use(helmet());
+app.use((req: Request, res: Response, next: NextFunction) => {
+    if (!req.secure) {
+        return res.redirect("https://" + req.headers.host + req.url);
+    }
+    next();
+})
+
 // view engine setup
 app.engine("hbs", hbs({
     extname: ".hbs",
@@ -104,14 +116,13 @@ app.use("/users", users);
 app.use("/meetups", meetups);
 
 // catch 404 and forward to error handler
-app.use(function (_req: Request, res: Response, next: NextFunction): void {
+app.use((_req: Request, res: Response, next: NextFunction) => {
     const err: Error = new Error("Not Found");
     res.status(404);
     next(err);
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get("env") === "development") {
@@ -134,13 +145,14 @@ app.use((err: any, _req: Request, res: Response) => {
     });
 });
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT);
 
-//Configure https with self-signed certificate and private key
+// configure https with self-signed certificate and private key
 const key = fs.readFileSync("cert.key").toString();
 const certificate = fs.readFileSync("cert.crt").toString();
 const serverOptions: ServerOptions = { key: key, cert: certificate };
 
-const server: Server = https.createServer(serverOptions, app).listen(app.get("port"), () => {
-    debug("Https express server listening on port " + server.address().port);
-});
+https.createServer(serverOptions, app).listen(443);
+
+// http server for retrieving http requests and redirecting them to https
+app.listen(app.get("port"));
