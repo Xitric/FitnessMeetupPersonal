@@ -1,5 +1,4 @@
-﻿import debug = require("debug");
-import express = require("express");
+﻿import express = require("express");
 import path = require("path");
 import expressSession = require("express-session");
 import passport = require("passport");
@@ -11,7 +10,7 @@ import helmet = require("helmet");
 import { Express, Request, Response, NextFunction } from "express";
 import { SessionOptions } from "express-session";
 import { Strategy, ExtraVerificationParams } from "passport-auth0";
-import { Server, ServerOptions } from "https";
+import { ServerOptions } from "https";
 import { User } from "./src/api/api";
 import { ApiFactory } from "./src/api/ApiFactory";
 import { Profile } from "./src/model/Profile";
@@ -36,7 +35,7 @@ const session: SessionOptions = {
         // only for GET requests that should have no side effects! A CSRF 'attack' that merely displays
         // a page to a user is quite harmless.
         sameSite: "lax",
-        maxAge: 600000 //10 minutes
+        maxAge: 600000 // 10 minutes
     }
 };
 
@@ -48,7 +47,7 @@ const strategy: Strategy = new Strategy({
     clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL: process.env.AUTH0_CALLBACK_URL + "/callback"
-}, function (accessToken: string, refreshToken: string, extraParams: ExtraVerificationParams, profile: Profile, done: any): void {
+}, function (accessToken: string, refreshToken: string, _extraParams: ExtraVerificationParams, profile: Profile, done: any): void {
     const id: string = profile.id;
     const name: string = profile.displayName;
     const emails: string[] = profile.emails.map(element => element.value);
@@ -94,7 +93,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
         return res.redirect("https://" + req.headers.host + req.url);
     }
     next();
-})
+});
 
 // view engine setup
 app.engine("hbs", hbs({
@@ -148,8 +147,8 @@ app.use((err: any, _req: Request, res: Response) => {
 app.set("port", process.env.PORT);
 
 // configure https with self-signed certificate and private key
-const key = fs.readFileSync("cert.key").toString();
-const certificate = fs.readFileSync("cert.crt").toString();
+const key: string = fs.readFileSync("cert.key").toString();
+const certificate: string = fs.readFileSync("cert.crt").toString();
 const serverOptions: ServerOptions = { key: key, cert: certificate };
 
 https.createServer(serverOptions, app).listen(443);

@@ -9,7 +9,8 @@ const router: Router = Router();
 router.get("/login",
     loginBlock,
     // @ts-ignore
-    passport.authenticate("auth0", { audience: "https://fitnessmeetupkasper.azurewebsites.net", scope: "openid email profile write:meetups write:profile" }),
+    passport.authenticate("auth0", { audience: "https://fitnessmeetupkasper.azurewebsites.net",
+        scope: "openid email profile write:meetups write:profile" }),
     (_req: Request, res: Response) => {
     res.redirect("/");
 });
