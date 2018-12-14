@@ -10,8 +10,8 @@ router.get("/me", ensureProfile, (_req: Request, res: Response) => {
 
 router.get("/:id", (req: Request, res: Response) => {
     ApiFactory.createUsersApi().getUser(req.params.id).then(result => {
-        res.locals.profile = result.body;
-        res.locals.title = res.locals.profile.name;
+        res.locals.user = result.body;
+        res.locals.title = res.locals.user.name;
         res.render("profile", res.locals);
     });
 });
