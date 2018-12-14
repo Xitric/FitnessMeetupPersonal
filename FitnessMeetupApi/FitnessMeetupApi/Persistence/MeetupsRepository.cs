@@ -35,7 +35,6 @@ namespace FitnessMeetupApi.Persistence
 
             using (var context = new FitnessMeetupKasperContext())
             {
-                meetupEntity.MeetupId = 0;
                 context.Meetup.Add(meetupEntity);
                 context.SaveChanges();
 

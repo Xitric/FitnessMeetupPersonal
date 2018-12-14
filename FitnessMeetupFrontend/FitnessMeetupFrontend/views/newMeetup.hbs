@@ -2,21 +2,21 @@
     <h1>New Meetup</h1>
 </div>
 <div class="pageContent">
-    <form>
+    <form action="" method="post">
         <div class="meetupMetaGroup">
             <!--Title-->
             <div class="formGroup titleField">
                 <h2 class="labelHeader">
                     <label for="titleBox">Title</label>
                 </h2>
-                <input class="formField" type="text" name="titleBox" id="titleBox" required/>
+                <input class="formField" type="text" name="title" id="titleBox" required/>
             </div>
             <!--Sport-->
             <div class="formGroup metaField">
                 <h2 class="labelHeader">
                     <label for="sportSelect">Sport</label>
                 </h2>
-                <select class="formField" name="sportSelect" id="sportSelect">
+                <select class="formField" name="sport" id="sportSelect" required>
                     <option>any</option>
                     {{#each sports}}
                         <option>{{this}}</option>
@@ -28,7 +28,7 @@
                 <h2 class="labelHeader">
                     <label for="datePicker">Date</label>
                 </h2>
-                <input class="formField" type="datetime-local" name="datePicker" id="datePicker"/>
+                <input class="formField" type="datetime-local" name="date" id="datePicker" required/>
             </div>
         </div>
         <!--Description-->
@@ -36,7 +36,7 @@
             <h2 class="labelHeader">
                 <label for="descriptionBox">Description</label>
             </h2>
-            <textarea class="formField descriptionField" name="descriptionBox" id="descriptionBox" required></textarea>
+            <textarea class="formField descriptionField" name="description" id="descriptionBox"></textarea>
         </div>
         <div class="formGroup">
             <button class="button" name="submitButton" type="submit">Host meetup!</button>

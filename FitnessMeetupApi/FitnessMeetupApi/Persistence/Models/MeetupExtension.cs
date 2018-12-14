@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FitnessMeetupApi.Persistence.Models
@@ -27,23 +28,23 @@ namespace FitnessMeetupApi.Persistence.Models
 
         public static Meetup ToMeetupEntity(Service.Models.Meetup dto)
         {
-            if (dto == null || dto.Id == null)
+            if (dto == null)
             {
                 return null;
             }
 
             return new Meetup()
             {
-                MeetupId = (int)dto.Id,
+                MeetupId = dto.Id == null ? 0 : (int)dto.Id,
                 Title = dto.Title,
                 Description = dto.Description,
                 Sport = dto.Sport == null ? "other" : dto.Sport,
                 Date = (DateTime)dto.Date,
                 Location = ToLocationEntity(dto.Location),
                 Owner = User.ToUserEntity(dto.Owner).UserId,
-                Participant = dto.Participants.Where(participant => participant.Id != null).Select(participant => new Models.Participant()
+                Participant = dto.Participants == null ? new List<Participant>() : dto.Participants.Where(participant => participant.Id != null).Select(participant => new Models.Participant()
                 {
-                    MeetupId = (int) dto.Id,
+                    MeetupId = (int)dto.Id,
                     UserId = participant.Id
                 }).ToList()
             };

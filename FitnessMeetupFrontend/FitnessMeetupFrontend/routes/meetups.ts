@@ -1,6 +1,7 @@
 import {Router, Request, Response} from "express";
 import {ApiFactory} from "../src/api/ApiFactory";
 import ensureProfile from "./middleware/ensureProfile";
+import { Meetup, Location } from "../src/api/api";
 
 const router: Router = Router();
 
@@ -8,6 +9,22 @@ router.get("/new", ensureProfile, async (_req: Request, res: Response) => {
     res.locals.title = "New meetup";
     res.locals.sports = (await ApiFactory.createSportsApi().getAllSports()).body;
     res.render("newMeetup", res.locals);
+});
+
+router.post("/new", ensureProfile, async (req: Request, res: Response) => {
+    let meetup: Meetup = {
+        title: req.body.title,
+        description: req.body.description,
+        sport: req.body.sport,
+        date: new Date(req.body.date),
+        owner: req.user.profile,
+        location: { lat: 1, lng: 1 }
+    };
+    ApiFactory.createMeetupsApi(req.user.accessToken).addMeetup(meetup).catch(err => {
+        console.log(err);
+    }).then(result => {
+        res.redirect("/meetups");
+    });
 });
 
 router.get("/:id/join", ensureProfile, (req: Request, res: Response) => {
