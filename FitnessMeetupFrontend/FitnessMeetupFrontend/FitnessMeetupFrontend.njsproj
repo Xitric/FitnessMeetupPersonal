@@ -11,8 +11,7 @@
 AUTH0_CLIENT_ID=UVrK9ErJ4PdZN07kFO0X8umBz804GUm6
 AUTH0_CLIENT_SECRET=Aq4bzp4p_K9QTrwTYmS01C6hPTBHbiPtEX-_FrwiPZO0pWhIAwNATUA3DrtAtgpP
 SESSION_SECRET=7BFB6ogkpX%P614BngqL^tzYV3x*4al8FPnlUDTaBR7Vj8j5^q&amp;E*dFk2Mmv5V^G
-AUTH0_CALLBACK_URL=https://localhost
-BACKEND_API=http://localhost:55555/v1</Environment>
+AUTH0_CALLBACK_URL=https://localhost</Environment>
     <NameOfLastUsedPublishProfile>FitnessMeetup - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />

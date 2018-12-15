@@ -5,12 +5,12 @@
     <div class="sportsList">
         <h1>Sports</h1>
         {{#each sports}}
-            <a href="/meetups?sport={{this}}">
-                <div class="sportElement">
-                    <p>{{this}}</p>
-                    <img src="/images/{{this}}.png"/>
-                </div>
-            </a>
+        <a href="/meetups?sport={{this}}">
+            <div class="sportElement">
+                <p>{{this}}</p>
+                <img src="/images/{{this}}.png" />
+            </div>
+        </a>
         {{/each}}
     </div>
 </div>

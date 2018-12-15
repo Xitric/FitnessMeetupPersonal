@@ -1,17 +1,21 @@
-import {Router, Request, Response} from "express";
+import csurf = require("csurf");
+
+import { Router, Request, Response } from "express";
 import {ApiFactory} from "../src/api/ApiFactory";
 import ensureProfile from "./middleware/ensureProfile";
-import { Meetup, Location } from "../src/api/api";
+import { Meetup } from "../src/api/api";
 
 const router: Router = Router();
+const csrf = csurf();
 
-router.get("/new", ensureProfile, async (_req: Request, res: Response) => {
+router.get("/new", ensureProfile, csrf, async (req: Request, res: Response) => {
     res.locals.title = "New meetup";
     res.locals.sports = (await ApiFactory.createSportsApi().getAllSports()).body;
+    res.locals.csrf = req.csrfToken();
     res.render("newMeetup", res.locals);
 });
 
-router.post("/new", ensureProfile, async (req: Request, res: Response) => {
+router.post("/new", ensureProfile, csrf, async (req: Request, res: Response) => {
     let meetup: Meetup = {
         title: req.body.title,
         description: req.body.description,
@@ -22,7 +26,7 @@ router.post("/new", ensureProfile, async (req: Request, res: Response) => {
     };
     ApiFactory.createMeetupsApi(req.user.accessToken).addMeetup(meetup).catch(err => {
         console.log(err);
-    }).then(result => {
+    }).then(_result => {
         res.redirect("/meetups");
     });
 });
