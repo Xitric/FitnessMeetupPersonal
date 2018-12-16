@@ -23,7 +23,7 @@ router.get("/callback", (req: Request, res: Response, next: NextFunction) => {
             return next(err);
         }
         if (!user) {
-            return res.redirect("/login");
+            return res.redirect("/");
         }
         req.logIn(user, (err) => {
             if (err) {
@@ -35,10 +35,8 @@ router.get("/callback", (req: Request, res: Response, next: NextFunction) => {
                 if (err) {
                     res.redirect("/logout");
                 }
-                const returnTo: string = req.session.returnTo;
-                delete req.session.returnTo;
                 req.session.passport = passportSession;
-                res.redirect(returnTo || "/users/me");
+                res.redirect("/users/me");
             });
         });
     })(req, res, next);

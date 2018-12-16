@@ -14,7 +14,7 @@ router.get("/:id", async (req: Request, res: Response) => {
         res.locals.title = res.locals.user.name;
         res.render("profile", res.locals);
     } catch (err) {
-        res.render("/");
+        res.redirect("/");
     }
 });
 

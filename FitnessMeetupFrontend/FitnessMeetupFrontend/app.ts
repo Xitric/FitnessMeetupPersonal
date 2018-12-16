@@ -49,7 +49,7 @@ const strategy: Strategy = new Strategy({
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL: process.env.AUTH0_CALLBACK_URL + "/callback",
     state: true
-}, function (accessToken: string, refreshToken: string, _extraParams: ExtraVerificationParams, profile: Profile, done: any): void {
+}, async function (accessToken: string, refreshToken: string, _extraParams: ExtraVerificationParams, profile: Profile, done: any): Promise<void> {
     const id: string = profile.id;
     const name: string = profile.displayName;
     const emails: string[] = profile.emails.map(element => element.value);
@@ -62,9 +62,12 @@ const strategy: Strategy = new Strategy({
         profilePicture: picture
     };
 
-    ApiFactory.createUsersApi(accessToken).addUser(user).catch(error => {
-        console.log(error);
-    });
+    try {
+        await ApiFactory.createUsersApi(accessToken).addUser(user);
+    } catch (err) {
+        console.log(err);
+    }
+
     return done(null, { profile: user, accessToken: accessToken, refreshToken: refreshToken });
 });
 
