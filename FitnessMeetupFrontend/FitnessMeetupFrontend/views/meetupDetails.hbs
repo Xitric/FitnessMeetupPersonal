@@ -3,8 +3,8 @@
         <div class="meetupDetailsInfo">
             <h1>{{meetup.title}}</h1>
             <div>
-                <p>Hosted by: <a class="undecorated" href="/users/{{meetup.owner.id}}">{{meetup.owner.name}}</a></p>
-                <p>When: {{meetup.date}}</p>
+                <p>Hosted by: <a class="undecorated" href="/users/{{userIdFilter meetup.owner.id}}">{{meetup.owner.name}}</a></p>
+                <p>When: {{prettyDate meetup.date}}</p>
             </div>
         </div>
         <div class="joinDiv" align="right">
@@ -13,7 +13,7 @@
                 {{#if participates}}
                 <p>You have already joined this meetup.</p>
                 {{else}}
-                <form action="/meetups/{{meetup.id}}/join" method="post">
+                <form action="/meetups/{{numberFilter meetup.id}}/join" method="post">
                     <input type="hidden" name="_csrf" value="{{csrf}}" />
                     <button class="button" type="submit">Join</button>
                 </form>
@@ -31,7 +31,7 @@
         <h3>Participants ({{meetup.participants.length}})</h3>
         <ul>
             {{#each meetup.participants}}
-            <li><a class="undecorated" href="/users/{{this.id}}">{{this.name}}</a></li>
+            <li><a class="undecorated" href="/users/{{userIdFilter this.id}}">{{this.name}}</a></li>
             {{/each}}
         </ul>
     </div>

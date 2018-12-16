@@ -105,7 +105,8 @@ app.engine("hbs", hbs({
     extname: ".hbs",
     defaultLayout: "layout",
     layoutsDir: __dirname + "/views",
-    partialsDir: __dirname + "/views/partials"
+    partialsDir: __dirname + "/views/partials",
+    helpers: require("./src/handlebarsHelpers").helpers
 }));
 app.set("view engine", "hbs");
 

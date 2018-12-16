@@ -84,6 +84,9 @@ AUTH0_CALLBACK_URL=https://localhost</Environment>
     <TypeScriptCompile Include="src\api\model\meetup.ts" />
     <TypeScriptCompile Include="src\api\model\models.ts" />
     <TypeScriptCompile Include="src\api\model\user.ts" />
+    <TypeScriptCompile Include="src\handlebarsHelpers.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\model\Profile.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

@@ -13,12 +13,14 @@
     "bluebird": "^3.5.3",
     "csurf": "^1.9.0",
     "debug": "^2.2.0",
+    "encodeurl": "^1.0.2",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
     "helmet": "^3.15.0",
     "passport": "^0.4.0",
-    "passport-auth0": "^1.1.0"
+    "passport-auth0": "^1.1.0",
+    "validator": "^10.9.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.24",
@@ -34,7 +36,8 @@
     "@types/passport": "^0.4.7",
     "@types/passport-auth0": "^1.0.2",
     "@types/request": "^2.48.1",
-    "@types/serve-static": "^1.7.32"
+    "@types/serve-static": "^1.7.32",
+    "@types/validator": "^9.4.4"
   },
   "engines": {
     "node": "^8.0.0"

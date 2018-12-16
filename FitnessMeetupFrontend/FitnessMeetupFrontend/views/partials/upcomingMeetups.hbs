@@ -1,20 +1,18 @@
 <h2>Upcoming meetups</h2>
-<!--TODO: Form for filtering-->
 
 {{#if meetups}}
     {{#each meetups}}
-        <a class="undecorated" href="/meetups/{{this.id}}">
+        <a class="undecorated" href="/meetups/{{numberFilter this.id}}">
             <div class="meetupDiv">
                 <h4 class="meetupTitle">{{this.title}}</h4>
                 <div class="meetupInfo">
                     <p class="sportLabel">{{this.sport}}</p>
                     <p class="distanceLabel">5.4km</p>
                 </div>
-                <p class="dateLabel">On {{this.date}}</p>
+                <p class="dateLabel">On {{prettyDate this.date}}</p>
             </div>
         </a>
     {{/each}}
-    <!--TODO: Next and prev buttons-->
 {{else}}
     <p>No meetups to show</p>
 {{/if}}
