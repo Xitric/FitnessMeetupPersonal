@@ -29,7 +29,7 @@ namespace FitnessMeetupApi.Persistence
             }
         }
 
-        public bool CreateMeetup(Service.Models.Meetup meetup)
+        public long CreateMeetup(Service.Models.Meetup meetup)
         {
             var meetupEntity = Meetup.ToMeetupEntity(meetup);
 
@@ -37,10 +37,9 @@ namespace FitnessMeetupApi.Persistence
             {
                 context.Meetup.Add(meetupEntity);
                 context.SaveChanges();
-
             }
 
-            return true;
+            return meetupEntity.MeetupId;
         }
 
         public Service.Models.Meetup GetMeetup(long id)

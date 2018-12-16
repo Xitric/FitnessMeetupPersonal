@@ -35,7 +35,7 @@ namespace FitnessMeetupApi.Persistence.Models
 
             return new Meetup()
             {
-                MeetupId = dto.Id == null ? 0 : (int)dto.Id,
+                MeetupId = dto.Id == null ? 0 : (long)dto.Id,
                 Title = dto.Title,
                 Description = dto.Description,
                 Sport = dto.Sport == null ? "other" : dto.Sport,
@@ -44,7 +44,7 @@ namespace FitnessMeetupApi.Persistence.Models
                 Owner = User.ToUserEntity(dto.Owner).UserId,
                 Participant = dto.Participants == null ? new List<Participant>() : dto.Participants.Where(participant => participant.Id != null).Select(participant => new Models.Participant()
                 {
-                    MeetupId = (int)dto.Id,
+                    MeetupId = (long)dto.Id,
                     UserId = participant.Id
                 }).ToList()
             };

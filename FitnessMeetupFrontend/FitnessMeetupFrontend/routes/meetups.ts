@@ -1,9 +1,9 @@
 import csurf = require("csurf");
 
 import { Router, Request, Response } from "express";
-import {ApiFactory} from "../src/api/ApiFactory";
-import ensureProfile from "./middleware/ensureProfile";
+import { ApiFactory } from "../src/api/ApiFactory";
 import { Meetup } from "../src/api/api";
+import ensureProfile from "./middleware/ensureProfile";
 
 const router: Router = Router();
 const csrf = csurf();
@@ -24,17 +24,24 @@ router.post("/new", ensureProfile, csrf, async (req: Request, res: Response) => 
         owner: req.user.profile,
         location: { lat: 1, lng: 1 }
     };
-    ApiFactory.createMeetupsApi(req.user.accessToken).addMeetup(meetup).catch(err => {
+
+    try {
+        let result: Meetup = (await ApiFactory.createMeetupsApi(req.user.accessToken).addMeetup(meetup)).body;
+        res.redirect("/meetups/" + result.id);
+    } catch (err) {
         console.log(err);
-    }).then(_result => {
-        res.redirect("/meetups");
-    });
+        res.redirect("/new");
+    }
 });
 
-router.post("/:id/join", ensureProfile, csrf, (req: Request, res: Response) => {
-    ApiFactory.createMeetupsApi(req.user.accessToken).addParticipant(req.params.id, res.locals.profile).then(result => {
-        res.redirect("/meetups/" + req.params.id);
-    });
+router.post("/:id/join", ensureProfile, csrf, async (req: Request, res: Response) => {
+    try {
+        let result: Meetup = (await ApiFactory.createMeetupsApi(req.user.accessToken).addParticipant(req.params.id, res.locals.profile.id)).body;
+        res.redirect("/meetups/" + result.id);
+    } catch (err) {
+        console.log(err);
+        res.redirect("/");
+    }
 });
 
 router.get("/:id", csrf, async (req: Request, res: Response) => {

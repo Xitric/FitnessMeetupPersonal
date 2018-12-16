@@ -3,12 +3,15 @@ import { ApiFactory } from "../src/api/ApiFactory";
 
 const router: Router = Router();
 
-router.get("/", (_req: Request, res: Response) => {
-    ApiFactory.createMeetupsApi().getUpcomingMeetups().then(result => {
-        res.locals.title = "Fitness Meetup";
-        res.locals.meetups = result.body;
-        res.render("index", res.locals);
-    });
+router.get("/", async (_req: Request, res: Response) => {
+    try {
+        res.locals.meetups = (await ApiFactory.createMeetupsApi().getUpcomingMeetups()).body;
+    } catch (err) {
+        console.log(err);
+    }
+
+    res.locals.title = "Fitness Meetup";
+    res.render("index", res.locals);
 });
 
 export default router;

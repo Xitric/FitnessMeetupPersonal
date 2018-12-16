@@ -16,7 +16,6 @@ import Promise = require('bluebird');
 
 /* tslint:disable:no-unused-locals */
 import { Meetup } from '../model/meetup';
-import { User } from '../model/user';
 
 import { ObjectSerializer, Authentication, HttpBasicAuth, ApiKeyAuth, OAuth, VoidAuth } from '../model/models';
 
@@ -81,7 +80,7 @@ export class MeetupsApi {
      * @summary Add a new meetup to the database.
      * @param meetup Meetup object that needs to be added to the database.
      */
-    public addMeetup (meetup: Meetup) : Promise<{ response: http.IncomingMessage; body?: any;  }> {
+    public addMeetup (meetup: Meetup) : Promise<{ response: http.IncomingMessage; body: Meetup;  }> {
         const localVarPath = this.basePath + '/meetups';
         let localVarQueryParameters: any = {};
         let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
@@ -116,11 +115,12 @@ export class MeetupsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.IncomingMessage; body?: any;  }>((resolve, reject) => {
+        return new Promise<{ response: http.IncomingMessage; body: Meetup;  }>((resolve, reject) => {
             localVarRequest(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
+                    body = ObjectSerializer.deserialize(body, "Meetup");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
                         resolve({ response: response, body: body });
                     } else {
@@ -132,11 +132,11 @@ export class MeetupsApi {
     }
     /**
      * 
-     * @summary Adds a participant to a specific meetup
-     * @param id The unique identifier for the specific meetup
-     * @param user User to add
+     * @summary Adds a participant to a specific meetup.
+     * @param id The unique identifier for the specific meetup.
+     * @param body The id of the user to add as a participant.
      */
-    public addParticipant (id: number, user: User) : Promise<{ response: http.IncomingMessage; body?: any;  }> {
+    public addParticipant (id: number, body: string) : Promise<{ response: http.IncomingMessage; body: Meetup;  }> {
         const localVarPath = this.basePath + '/meetups/{id}/participants'
             .replace('{' + 'id' + '}', encodeURIComponent(String(id)));
         let localVarQueryParameters: any = {};
@@ -148,9 +148,9 @@ export class MeetupsApi {
             throw new Error('Required parameter id was null or undefined when calling addParticipant.');
         }
 
-        // verify required parameter 'user' is not null or undefined
-        if (user === null || user === undefined) {
-            throw new Error('Required parameter user was null or undefined when calling addParticipant.');
+        // verify required parameter 'body' is not null or undefined
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling addParticipant.');
         }
 
 
@@ -163,7 +163,7 @@ export class MeetupsApi {
             uri: localVarPath,
             useQuerystring: this._useQuerystring,
             json: true,
-            body: ObjectSerializer.serialize(user, "User")
+            body: ObjectSerializer.serialize(body, "string")
         };
 
         this.authentications.oauthAuthentication.applyToRequest(localVarRequestOptions);
@@ -177,11 +177,12 @@ export class MeetupsApi {
                 localVarRequestOptions.form = localVarFormParams;
             }
         }
-        return new Promise<{ response: http.IncomingMessage; body?: any;  }>((resolve, reject) => {
+        return new Promise<{ response: http.IncomingMessage; body: Meetup;  }>((resolve, reject) => {
             localVarRequest(localVarRequestOptions, (error, response, body) => {
                 if (error) {
                     reject(error);
                 } else {
+                    body = ObjectSerializer.deserialize(body, "Meetup");
                     if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
                         resolve({ response: response, body: body });
                     } else {

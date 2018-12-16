@@ -35,7 +35,7 @@ namespace FitnessMeetupApi.Service.Controllers
         /// Add a new user to the database.
         /// </summary>
         /// <param name="user">The user to be added with the unique id</param>
-        /// <response code="204">Sucessfully created the user.</response>
+        /// <response code="201">Sucessfully created the user.</response>
         /// <response code="400">Invalid input</response>
         [HttpPost]
         [Route("/v1/users")]
@@ -46,8 +46,8 @@ namespace FitnessMeetupApi.Service.Controllers
             //Ensure that users can only edit their own profiles
             if (User.HasId(user.Id))
             {
-                users.AddUser(user);
-                return new ObjectResult(users.GetUser(user.Id));
+                var id = users.AddUser(user);
+                return new ObjectResult(users.GetUser(id));
             }
             else
             {

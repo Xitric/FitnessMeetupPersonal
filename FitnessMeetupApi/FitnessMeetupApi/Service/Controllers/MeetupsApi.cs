@@ -37,7 +37,7 @@ namespace FitnessMeetupApi.Service.Controllers
         /// Add a new meetup to the database.
         /// </summary>
         /// <param name="meetup">Meetup object that needs to be added to the database.</param>
-        /// <response code="405">Invalid input</response>
+        /// <response code="201">Successfully created a new meetup.</response>
         [HttpPost]
         [Route("/v1/meetups")]
         [ValidateModelState]
@@ -47,14 +47,8 @@ namespace FitnessMeetupApi.Service.Controllers
             //Ensure that users can only post meetups in their own name
             if (User.HasId(meetup.Owner.Id))
             {
-                if (meetups.CreateMeetup(meetup))
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                var id = meetups.CreateMeetup(meetup);
+                return new ObjectResult(meetups.GetMeetup(id));
             }
             else
             {
@@ -63,22 +57,23 @@ namespace FitnessMeetupApi.Service.Controllers
         }
 
         /// <summary>
-        /// Adds a participant to a specific meetup
+        /// Adds a participant to a specific meetup.
         /// </summary>
-        /// <param name="id">The unique identifier for the specific meetup</param>
-        /// <param name="user">User to add</param>
-        /// <response code="405">Invalid input</response>
+        /// <param name="id">The unique identifier for the specific meetup.</param>
+        /// <param name="body">The id of the user to add as a participant.</param>
+        /// <response code="201">Successfully added the participant to the specified meetup.</response>
         [HttpPost]
         [Route("/v1/meetups/{id}/participants")]
         [ValidateModelState]
         [Authorize(Policy = "write:meetups")]
-        public virtual IActionResult AddParticipant([FromRoute][Required]long? id, [FromBody]User user)
+        public virtual IActionResult AddParticipant([FromRoute][Required]long? id, [FromBody]string body)
         {
             //Ensure that users can only join meetups in their own name
-            if (User.HasId(user.Id))
+            if (User.HasId(body))
             {
-                meetups.AddPartipant((int)id, user.Id);
-                return Ok();
+                //TODO: Return resulting meetup
+                meetups.AddPartipant((long)id, body);
+                return new ObjectResult(meetups.GetMeetup((long) id));
             }
             else
             {
@@ -97,7 +92,7 @@ namespace FitnessMeetupApi.Service.Controllers
         [ValidateModelState]
         public virtual IActionResult GetMeetup([FromRoute][Required]long? id)
         {
-            var meetup = meetups.GetMeetup((int)id);
+            var meetup = meetups.GetMeetup((long)id);
             if (meetup == null)
             {
                 return NotFound();

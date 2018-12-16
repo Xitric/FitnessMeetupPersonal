@@ -28,6 +28,7 @@ const session: SessionOptions = {
     resave: false,
     saveUninitialized: false,
     name: "fitnessSession",
+    rolling: true,
     cookie: {
         secure: true,
         httpOnly: true,

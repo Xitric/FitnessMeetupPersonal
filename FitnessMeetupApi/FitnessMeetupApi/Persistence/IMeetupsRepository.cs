@@ -5,7 +5,7 @@ namespace FitnessMeetupApi.Persistence
 {
     public interface IMeetupsRepository
     {
-        bool CreateMeetup(Meetup meetup);
+        long CreateMeetup(Meetup meetup);
 
         Meetup GetMeetup(long id);
 
