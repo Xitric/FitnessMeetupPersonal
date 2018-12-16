@@ -21,7 +21,6 @@ namespace FitnessMeetupApi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
             services.AddPersistence();
 
             //Security
@@ -73,7 +72,6 @@ namespace FitnessMeetupApi
             }
 
             app.UseHttpsRedirection();
-            app.UseCors(builder => builder.AllowAnyOrigin());
             app.UseAuthentication();
             app.UseMvc(routes =>
             {
