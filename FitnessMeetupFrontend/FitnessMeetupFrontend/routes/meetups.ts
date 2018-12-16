@@ -31,16 +31,17 @@ router.post("/new", ensureProfile, csrf, async (req: Request, res: Response) => 
     });
 });
 
-router.get("/:id/join", ensureProfile, (req: Request, res: Response) => {
+router.post("/:id/join", ensureProfile, csrf, (req: Request, res: Response) => {
     ApiFactory.createMeetupsApi(req.user.accessToken).addParticipant(req.params.id, res.locals.profile).then(result => {
         res.redirect("/meetups/" + req.params.id);
     });
 });
 
-router.get("/:id", async (req: Request, res: Response) => {
+router.get("/:id", csrf, async (req: Request, res: Response) => {
     // todo: Check everywhere that we use ids from the url if the input is safe?
     res.locals.meetup = (await ApiFactory.createMeetupsApi().getMeetup(req.params.id)).body;
     res.locals.title = res.locals.meetup.title;
+    res.locals.csrf = req.csrfToken();
 
     if (res.locals.profile) {
         if (res.locals.meetup.participants.find(value => value.id === res.locals.profile.id)) {
