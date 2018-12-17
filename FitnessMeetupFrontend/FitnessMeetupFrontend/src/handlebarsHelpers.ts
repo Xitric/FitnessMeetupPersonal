@@ -36,6 +36,9 @@ export let helpers = {
         //Return a link to the landing page as a replacement for illegal URLs
         return "/";
     },
+    capitalizeFirstLetter: function (value: string): string {
+        return value.charAt(0).toUpperCase() + value.substr(1).toLowerCase();
+    },
     prettyDate: function (value: Date): string {
         let pretty = `${dayNames[value.getDay()]} ${value.getDate()}/${value.getMonth() + 1}`;
 

@@ -7,7 +7,7 @@
         {{#each sports}}
         <a href="/meetups?sport={{letterFilter this}}">
             <div class="sportElement">
-                <p>{{this}}</p>
+                <p>{{capitalizeFirstLetter this}}</p>
                 <img src="/images/{{letterFilter this}}.png" />
             </div>
         </a>
