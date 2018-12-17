@@ -49,6 +49,7 @@ AUTH0_CALLBACK_URL=https://localhost</Environment>
     <TypeScriptCompile Include="routes\middleware\loginBlocker.ts" />
     <TypeScriptCompile Include="routes\users.ts" />
     <None Include="FitnessMeetup - Web Deploy.pubxml" />
+    <Content Include="public\favicon.ico" />
     <Content Include="public\images\crossfit.png" />
     <Content Include="public\images\cycling.png" />
     <Content Include="public\images\FrontPageHero.png" />

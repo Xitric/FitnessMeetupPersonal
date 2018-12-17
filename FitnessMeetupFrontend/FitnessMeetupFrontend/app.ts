@@ -93,6 +93,13 @@ app.use(function (req: Request, res: Response, next: NextFunction): void {
 
 // enforce https and other recommended headers
 app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'none'"],
+        imgSrc: ["'self'", "https://s.gravatar.com", "https://i1.wp.com", "https://*.googleusercontent.com"]
+    }
+}));
 app.use((req: Request, res: Response, next: NextFunction) => {
     if (!req.secure) {
         return res.redirect("https://" + req.headers.host + req.url);
