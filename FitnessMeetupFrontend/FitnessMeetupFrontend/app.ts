@@ -163,8 +163,6 @@ app.use((err: any, _req: Request, res: Response) => {
 app.set("port", process.env.PORT);
 
 // configure https with self-signed certificate and private key
-// sorry, this is not available to you :/
-// you are welcome to sign your own certificates or disable https
 const key: string = fs.readFileSync("cert.key").toString();
 const certificate: string = fs.readFileSync("cert.crt").toString();
 const serverOptions: ServerOptions = { key: key, cert: certificate };
