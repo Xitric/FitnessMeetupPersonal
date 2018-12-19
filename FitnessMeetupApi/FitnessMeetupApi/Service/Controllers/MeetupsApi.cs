@@ -71,7 +71,6 @@ namespace FitnessMeetupApi.Service.Controllers
             //Ensure that users can only join meetups in their own name
             if (User.HasId(body))
             {
-                //TODO: Return resulting meetup
                 meetups.AddPartipant((long)id, body);
                 return new ObjectResult(meetups.GetMeetup((long) id));
             }
