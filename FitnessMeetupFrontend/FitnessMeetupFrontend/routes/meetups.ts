@@ -9,13 +9,19 @@ import ensureProfile from "./middleware/ensureProfile";
 const router: Router = Router();
 const csrf = csurf();
 
+// router for creating new meetups
 router.get("/new", ensureProfile, csrf, async (req: Request, res: Response) => {
     res.locals.title = "New meetup";
     res.locals.sports = (await ApiFactory.createSportsApi().getAllSports()).body;
+
+    // use a synchronizer token to protect against CSRF attacks
+    // this will be validated on subsequent calls
     res.locals.csrf = req.csrfToken();
     res.render("newMeetup", res.locals);
 });
 
+// router for posting the information to create a new meetup
+// this router will validate the CSRF token provided in the post body
 router.post("/new", ensureProfile, csrf, async (req: Request, res: Response) => {
     let meetup: Meetup = {
         title: req.body.title,
@@ -29,6 +35,8 @@ router.post("/new", ensureProfile, csrf, async (req: Request, res: Response) => 
     try {
         let result: Meetup = (await ApiFactory.createMeetupsApi(req.user.accessToken).addMeetup(meetup)).body;
 
+        // redirect to the details page for the newly created meetup
+        // we treat the meetup id as untrusted data
         if (!DomainValidator.isNumber(result.id + "")) {
             throw new Error("Invalid response from API");
         }
@@ -39,6 +47,8 @@ router.post("/new", ensureProfile, csrf, async (req: Request, res: Response) => 
     }
 });
 
+// router for joining a meetup
+// this router will validate the CSRF token provided in the post body
 router.post("/:id/join", ensureProfile, csrf, async (req: Request, res: Response) => {
     try {
         if (!DomainValidator.isNumber(req.params.id)) {
@@ -56,6 +66,7 @@ router.post("/:id/join", ensureProfile, csrf, async (req: Request, res: Response
     }
 });
 
+// router for displaying the details page for a meetup
 router.get("/:id", csrf, async (req: Request, res: Response) => {
     try {
         if (!DomainValidator.isNumber(req.params.id + "")) {
@@ -64,6 +75,8 @@ router.get("/:id", csrf, async (req: Request, res: Response) => {
 
         res.locals.meetup = (await ApiFactory.createMeetupsApi().getMeetup(req.params.id)).body;
         res.locals.title = res.locals.meetup.title;
+
+        // we use a synchronizer token in the form for joining meetups
         res.locals.csrf = req.csrfToken();
 
         if (res.locals.profile) {
@@ -79,7 +92,9 @@ router.get("/:id", csrf, async (req: Request, res: Response) => {
     }
 });
 
+// router for displaying a list of upcoming meetup
 router.get("/", (async (req: Request, res: Response) => {
+    // we treat the sport string as untrusted data
     let sport: string = req.query.sport;
     if (sport && !DomainValidator.isText(sport)) {
         sport = undefined;

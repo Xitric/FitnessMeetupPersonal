@@ -6,6 +6,7 @@ import loginBlock from "./middleware/loginBlocker";
 
 const router: Router = Router();
 
+// route for logging in and getting an access token for my backend api with certain permissions
 router.get("/login",
     loginBlock,
     passport.authenticate("auth0", {
@@ -17,6 +18,7 @@ router.get("/login",
         res.redirect("/");
     });
 
+// this route gets invoked when the user has either finished or cancelled the grant flow
 router.get("/callback", (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate("auth0", (err, user) => {
         if (err) {
@@ -30,6 +32,8 @@ router.get("/callback", (req: Request, res: Response, next: NextFunction) => {
                 return next(err);
             }
 
+            // generate a new session id when the user authenticates to prevent session fixation
+            // the passport session is only used internally and can thus be carried over safely
             let passportSession = req.session.passport;
             req.session.regenerate(err => {
                 if (err) {
@@ -47,6 +51,8 @@ router.get("/logout", (req: Request, res: Response) => {
     req.session.destroy(err => {
         if (!err) {
             res.clearCookie("fitnessSession");
+
+            // this call is necessary to inform Auth0 that the user is no longer signed in
             res.redirect("https://fitness-meetup.eu.auth0.com/v2/logout?returnTo=" + process.env.AUTH0_CALLBACK_URL);
         }
     });

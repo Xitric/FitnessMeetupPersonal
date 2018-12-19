@@ -6,6 +6,8 @@ export default function ensureProfile(req: Request, res: Response, next: NextFun
     if (req.user) {
         return next();
     }
+
+    // force the user to log in, and then redirect back here
     req.session.returnTo = req.originalUrl;
     res.redirect("/login");
 }

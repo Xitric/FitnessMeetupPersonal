@@ -3,6 +3,8 @@ import validator = require("validator");
 
 const dayNames: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
+// helper methods to perform validation and sanitization of fields in Handlebars templates
+// this is used both for making the output prettier as well as to protect against XSS
 export let helpers = {
     numberFilter: function (value: string): string {
         if (DomainValidator.isNumber(value)) {
@@ -59,6 +61,7 @@ export let helpers = {
     }
 }
 
+// used for whitelist validation of untrusted data
 export class DomainValidator {
 
     public static isNumber(value: string): boolean {

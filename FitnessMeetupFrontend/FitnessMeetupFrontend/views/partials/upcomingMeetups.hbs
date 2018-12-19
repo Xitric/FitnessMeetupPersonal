@@ -1,18 +1,18 @@
 <h2>Upcoming meetups</h2>
 
 {{#if meetups}}
-    {{#each meetups}}
-        <a class="undecorated" href="/meetups/{{numberFilter this.id}}">
-            <div class="meetupDiv">
-                <h4 class="meetupTitle">{{this.title}}</h4>
-                <div class="meetupInfo">
-                    <p class="sportLabel">{{capitalizeFirstLetter this.sport}}</p>
-                    <p class="distanceLabel">Geolocation not implemented</p>
-                </div>
-                <p class="dateLabel">On {{prettyDate this.date}}</p>
-            </div>
-        </a>
-    {{/each}}
+{{#each meetups}}
+<a class="undecorated" href="/meetups/{{numberFilter this.id}}">
+    <div class="meetupDiv">
+        <h4 class="meetupTitle">{{this.title}}</h4>
+        <div class="meetupInfo">
+            <p class="sportLabel">{{capitalizeFirstLetter this.sport}}</p>
+            <p class="distanceLabel">Geolocation not implemented</p>
+        </div>
+        <p class="dateLabel">On {{prettyDate this.date}}</p>
+    </div>
+</a>
+{{/each}}
 {{else}}
-    <p>No meetups to show</p>
+<p>No meetups to show</p>
 {{/if}}

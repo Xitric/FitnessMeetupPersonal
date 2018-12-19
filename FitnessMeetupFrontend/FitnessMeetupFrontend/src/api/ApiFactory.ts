@@ -1,4 +1,4 @@
-//A class to provide helper methods for more easily using the generated api code
+// a class to provide helper methods for more easily using the generated api code
 import {MeetupsApi, SportsApi, UsersApi} from "./api/apis";
 
 export class ApiFactory {

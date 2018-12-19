@@ -27,11 +27,11 @@ const session: SessionOptions = {
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    name: "fitnessSession",
-    rolling: true,
+    name: "fitnessSession", // prevent easy identification of software used
+    rolling: true, // refresh cookie every request
     cookie: {
-        secure: true,
-        httpOnly: true,
+        secure: true, // only by https
+        httpOnly: true, // not available to JavaScript
         // this helps mitigate CSRF attacks. The cookie is allowed to be sent when following links, but
         // only for GET requests that should have no side effects! A CSRF 'attack' that merely displays
         // a page to a user is quite harmless.
@@ -39,7 +39,6 @@ const session: SessionOptions = {
         maxAge: 600000 // 10 minutes
     }
 };
-
 app.use(expressSession(session));
 
 // passport Auth0
@@ -48,8 +47,8 @@ const strategy: Strategy = new Strategy({
     clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL: process.env.AUTH0_CALLBACK_URL + "/callback",
-    state: true
-}, async function (accessToken: string, refreshToken: string, _extraParams: ExtraVerificationParams, profile: Profile, done: any): Promise<void> {
+    state: true // protect against CSRF
+}, async function (accessToken: string, _refreshToken: string, _extraParams: ExtraVerificationParams, profile: Profile, done: any): Promise<void> {
     const id: string = profile.id;
     const name: string = profile.displayName;
     const emails: string[] = profile.emails.map(element => element.value);
@@ -62,20 +61,21 @@ const strategy: Strategy = new Strategy({
         profilePicture: picture
     };
 
+    // register user in backend
     try {
         await ApiFactory.createUsersApi(accessToken).addUser(user);
     } catch (err) {
         console.log(err);
     }
 
-    return done(null, { profile: user, accessToken: accessToken, refreshToken: refreshToken });
+    // serialize profile and token info in passport session
+    return done(null, { profile: user, accessToken: accessToken });
 });
 
 passport.use(strategy);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// todo: user interface
 passport.serializeUser<any, any>(function (user: any, done: any): void {
     done(null, user);
 });
@@ -84,6 +84,7 @@ passport.deserializeUser(function (user: any, done: any): void {
     done(null, user);
 });
 
+// middleware to make profile info available to Handlebars templates
 app.use(function (req: Request, res: Response, next: NextFunction): void {
     if (req.user) {
         res.locals.profile = req.user.profile;
@@ -92,6 +93,7 @@ app.use(function (req: Request, res: Response, next: NextFunction): void {
 });
 
 // enforce https and other recommended headers
+// defense in depth against XSS
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy({
     directives: {
@@ -100,6 +102,7 @@ app.use(helmet.contentSecurityPolicy({
         imgSrc: ["'self'", "https://s.gravatar.com", "https://i1.wp.com", "https://*.googleusercontent.com"]
     }
 }));
+// https redirection
 app.use((req: Request, res: Response, next: NextFunction) => {
     if (!req.secure) {
         return res.redirect("https://" + req.headers.host + req.url);
@@ -107,7 +110,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-// view engine setup
+// view engine setup for Handlebars
 app.engine("hbs", hbs({
     extname: ".hbs",
     defaultLayout: "layout",
@@ -160,6 +163,8 @@ app.use((err: any, _req: Request, res: Response) => {
 app.set("port", process.env.PORT);
 
 // configure https with self-signed certificate and private key
+// sorry, this is not available to you :/
+// you are welcome to sign your own certificates or disable https
 const key: string = fs.readFileSync("cert.key").toString();
 const certificate: string = fs.readFileSync("cert.crt").toString();
 const serverOptions: ServerOptions = { key: key, cert: certificate };

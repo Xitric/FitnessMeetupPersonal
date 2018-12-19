@@ -3,6 +3,7 @@ import { ApiFactory } from "../src/api/ApiFactory";
 
 const router: Router = Router();
 
+// router for the landing page
 router.get("/", async (_req: Request, res: Response) => {
     try {
         res.locals.meetups = (await ApiFactory.createMeetupsApi().getUpcomingMeetups()).body;
